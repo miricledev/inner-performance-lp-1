@@ -1879,6 +1879,21 @@
             box-shadow: 0 2px 16px rgba(0,0,0,0.08);
             height: 120px;
         }
+        @media (max-width: 900px) {
+            .desktop-nav-logo {
+                display: none !important;
+            }
+        }
+        @media (max-width: 900px) {
+          .desktop-nav {
+            display: none !important;
+            height: 0 !important;
+            background: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            position: static !important;
+          }
+        }
     </style>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client"></script>
