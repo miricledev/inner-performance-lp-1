@@ -1,0 +1,10 @@
+{
+    "apiKey": "YOUR_GOOGLE_CALENDAR_API_KEY",
+    "calendarId": "YOUR_GOOGLE_CALENDAR_ID",
+    "workingHours": {
+        "start": 9,
+        "end": 17,
+        "interval": 60
+    },
+    "sessionDuration": 60
+} 
