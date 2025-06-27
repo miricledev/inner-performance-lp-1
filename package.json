@@ -1,0 +1,22 @@
+{
+  "name": "inner-performance-booking",
+  "version": "1.0.0",
+  "description": "Inner Performance booking system with SimplyBook.me integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
+  },
+  "keywords": [
+    "booking",
+    "simplybook",
+    "football",
+    "performance"
+  ],
+  "author": "Inner Performance",
+  "license": "MIT"
+}

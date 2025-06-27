@@ -3,29 +3,30 @@
 ## Calendar Integration Setup
 
 ### Prerequisites
-1. Google Cloud Platform account
-2. Google Calendar API enabled
+1. SimplyBook.me account
+2. API access enabled
 3. API credentials generated
 
 ### Setup Steps
 1. Copy `config.template.json` to `config.json`
-2. Fill in your Google Calendar credentials:
+2. Fill in your SimplyBook.me credentials:
    ```json
    {
-       "apiKey": "your-api-key-here",
-       "calendarId": "your-calendar-id-here"
+       "companyLogin": "your-company-login",
+       "apiToken": "your-api-token",
+       "unitId": "your-unit-id"
    }
    ```
 3. Never commit `config.json` to git
 4. For production, set up environment variables on your hosting platform
 
-### Google Calendar API Setup
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select existing one
-3. Enable Google Calendar API
-4. Create credentials (API key)
-5. Set up OAuth consent screen
-6. Configure authorized domains
+### SimplyBook.me API Setup
+1. Go to [SimplyBook.me](https://www.simplybook.me)
+2. Create an account or log in to your existing account
+3. Go to Settings > API & Integrations
+4. Enable API access
+5. Generate API token
+6. Note down your company login and unit ID
 
 ### Security Notes
 - Keep your API credentials secure
