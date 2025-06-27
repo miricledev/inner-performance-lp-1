@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Direct to Diagnosis - Expert Child Development Assessment</title>
+    <script src="https://widget.simplybook.it/v2/widget/widget.js" type="text/javascript"></script>
     
     <style>
         /* === GLOBAL STYLES & VARIABLES === */
@@ -4761,63 +4762,83 @@
             <div class="booking-content">
                 <h2>Book Your Assessment Session</h2>
                 <p>Select a time that works best for your family</p>
-                
-                <div class="calendar-controls">
-                    <button id="prevWeek" class="calendar-nav-btn">← Previous Week</button>
-                    <h3 id="currentWeekDisplay">Loading...</h3>
-                    <button id="nextWeek" class="calendar-nav-btn">Next Week →</button>
-                </div>
 
-                <script src="//widget.simplybook.it/v2/widget/widget.js" type="text/javascript"></script>
-<script type="text/javascript">
-    var widget = new SimplybookWidget({"widget_type":"iframe","url":"https:\/\/innerperformance.simplybook.it","theme":"creative","theme_settings":{"timeline_show_end_time":"0","timeline_modern_display":"as_slots","timeline_hide_unavailable":"1","index_page_content_grid":"[{\"template\":\"col_25_50_25\",\"items\":[\"timetable\",\"about-us\",\"contacts\"]}]","hide_past_days":"0","sb_base_color":"#49306b","display_item_mode":"block","booking_nav_bg_color":"#49306b","body_bg_color":"#ffffff","sb_review_image":"","dark_font_color":"#474747","light_font_color":"#ffffff","btn_color_1":"#c98e5a","hide_img_mode":"0","show_sidebar":"1","sb_busy":"#c7b3b3","sb_available":"#d6ebff"},"timeline":"classes_plugin","datepicker":"top_calendar","is_rtl":false,"app_config":{"clear_session":0,"allow_switch_to_ada":0,"predefined":[]}});
-</script>
+                <style>
+                    #simplybook-widget {
+                        max-width: 900px;
+                        margin: 2rem auto;
+                        padding: 24px 18px 18px 18px;
+                        background: rgba(33, 30, 56, 0.7);
+                        border-radius: 2rem;
+                        box-shadow: 0 10px 32px 0 rgba(41, 37, 81, 0.35);
+                        border: 2.5px solid #a991ff;
+                        backdrop-filter: blur(16px) saturate(180%);
+                        transition: box-shadow 0.3s cubic-bezier(.2,1,.22,1), transform 0.35s cubic-bezier(.2,1,.22,1);
+                        animation: widgetFadeIn 0.8s cubic-bezier(.2,1,.22,1) both;
+                      }
+                      
+                      #simplybook-widget:hover {
+                        box-shadow: 0 16px 44px 0 rgba(121, 99, 255, 0.35);
+                        transform: scale(1.015);
+                        border-color: #fbbf24;
+                      }
+                      
+                      @keyframes widgetFadeIn {
+                        0% {
+                          opacity: 0;
+                          transform: translateY(30px) scale(0.97);
+                        }
+                        100% {
+                          opacity: 1;
+                          transform: translateY(0) scale(1);
+                        }
+                      }
+                      
+                      /* Make sure the iframe fits and has rounded corners too */
+                      #simplybook-widget iframe {
+                        width: 100% !important;
+                        min-height: 650px !important;
+                        border-radius: 1.4rem;
+                        border: none;
+                        background: transparent;
+                        box-shadow: none;
+                      }
+                      
+                </style>
+                
+
+                <!-- Put this in your index.html where you want the booking widget to show -->
+
+                <div id="coach-images" style="display:none; text-align:center; margin-bottom:1rem;">
+                    <img id="coach-mason" src="images/mason.jpg" alt="Mason" style="display:none; width:140px; border-radius:50%; margin:0 10px;">
+                    <img id="coach-josh" src="images/josh.jpg" alt="Josh" style="display:none; width:140px; border-radius:50%; margin:0 10px;">
+                  </div>
+                  
+                  <!-- Widget container -->
+                  <div id="simplybook-widget">
+
+                    <script type="text/javascript">
+                        var widget = new SimplybookWidget({"widget_type":"iframe","url":"https:\/\/innerperformance.simplybook.it","theme":"blur","theme_settings":{"timeline_hide_unavailable":"1","hide_past_days":"0","timeline_modern_display":"as_slots","sb_base_color":"#2543a8","display_item_mode":"block","body_bg_color":"#ffffff","dark_font_color":"#2a2b39","light_font_color":"#ffffff","btn_color_1":"#e8e469","sb_company_label_color":"#090a39","hide_img_mode":"0","sb_busy":"#ccbe86","sb_available":"#e8de4f"},"timeline":"classes_plugin","datepicker":"top_calendar","is_rtl":false,"app_config":{"clear_session":0,"allow_switch_to_ada":0,"predefined":{"location":"2"}}});
+                    </script>
+                    
+                  </div>
+                  
+                  
+               
+                
+
+
+
 
                 
-                <div class="calendar-grid" id="calendarGrid">
-                    <!-- Calendar days will be dynamically generated -->
-                </div>
+            
                 
                 <p class="urgency-text">⚡ Limited slots each week - Book early to secure your preferred time</p>
             </div>
         </div>
     </section>
 
-    <!-- BOOKING MODAL -->
-    <div id="bookingModal" class="booking-modal">
-        <div class="booking-modal-content">
-            <div class="booking-modal-header">
-                <h3 id="modalDate">Select Time</h3>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            <div class="booking-modal-body">
-                <div class="time-slots" id="modalTimeSlots">
-                    <!-- Time slots and available coaches will be loaded here -->
-                </div>
-                <div class="booking-form" id="bookingForm" style="display: none;">
-                    <div class="selected-coach-info" id="selectedCoachInfo" style="display: flex; align-items: center; gap: 18px; margin-bottom: 18px;"></div>
-                    <h4>Complete Your Booking</h4>
-                    <div class="form-group">
-                        <label for="clientName">Full Name *</label>
-                        <input type="text" id="clientName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientEmail">Email *</label>
-                        <input type="email" id="clientEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientPhone">Phone *</label>
-                        <input type="tel" id="clientPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientNotes">Additional Notes</label>
-                        <textarea id="clientNotes" rows="3"></textarea>
-                    </div>
-                    <button class="book-button" id="confirmBooking">Confirm Booking</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
            <!-- DIAGNOSIS VALUE TABLE SECTION (NEW) -->
            <section class="diagnosis-value-section">
@@ -5083,508 +5104,7 @@
                 });
             }
 
-            function initializeCalendar() {
-                updateWeekDisplay();
-                loadWeekSlots();
-                updateNavigationButtons();
-                
-                // Add event listeners for navigation
-                document.getElementById('prevWeek').addEventListener('click', () => {
-                    currentWeekStart.setDate(currentWeekStart.getDate() - 7);
-                    updateWeekDisplay();
-                    loadWeekSlots();
-                    updateNavigationButtons();
-                });
-                
-                document.getElementById('nextWeek').addEventListener('click', () => {
-                    currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-                    updateWeekDisplay();
-                    loadWeekSlots();
-                    updateNavigationButtons();
-                });
-            }
-
-            function updateNavigationButtons() {
-                const prevBtn = document.getElementById('prevWeek');
-                const nextBtn = document.getElementById('nextWeek');
-                
-                // Get today's date
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                // Check if we're viewing the current week
-                const weekStart = new Date(currentWeekStart);
-                weekStart.setHours(0, 0, 0, 0);
-                
-                // Calculate the start of the actual current week (Monday)
-                const actualCurrentWeekStart = new Date(today);
-                const currentDayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-                const daysToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1; // Days to get to Monday
-                actualCurrentWeekStart.setDate(today.getDate() - daysToMonday);
-                actualCurrentWeekStart.setHours(0, 0, 0, 0);
-                
-                // Check if we're viewing the current week
-                const isCurrentWeek = weekStart.getTime() === actualCurrentWeekStart.getTime();
-                
-                // Disable previous week button if we're viewing the current week
-                prevBtn.disabled = isCurrentWeek;
-                
-                // Check if we've reached the 4-week limit (1 month ahead)
-                const fourWeeksFromToday = new Date(today);
-                fourWeeksFromToday.setDate(today.getDate() + 28); // 4 weeks = 28 days
-                
-                const isAtFourWeekLimit = weekStart.getTime() >= fourWeeksFromToday.getTime();
-                
-                // Disable next week button if we've reached the 4-week limit
-                nextBtn.disabled = isAtFourWeekLimit;
-            }
-
-            function initializeModal() {
-                const modal = document.getElementById('bookingModal');
-                const closeBtn = document.getElementById('closeModal');
-                const confirmBtn = document.getElementById('confirmBooking');
-
-                // Close modal
-                closeBtn.addEventListener('click', closeModal);
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) closeModal();
-                });
-
-                // Confirm booking
-                confirmBtn.addEventListener('click', handleBookingConfirmation);
-            }
-
-            function updateWeekDisplay() {
-                // Use currentWeekStart instead of always using today
-                const weekStart = new Date(currentWeekStart);
-                weekStart.setHours(0, 0, 0, 0);
-                
-                // Always show Monday-Friday (5 days)
-                const endOfWeek = new Date(weekStart);
-                endOfWeek.setDate(weekStart.getDate() + 4); // Monday + 4 days = Friday
-                
-                const startStr = weekStart.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric' 
-                });
-                const endStr = endOfWeek.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-                
-                document.getElementById('currentWeekDisplay').textContent = `${startStr} - ${endStr}`;
-            }
-
-            function createCalendarGrid() {
-                const calendarGrid = document.getElementById('calendarGrid');
-                calendarGrid.innerHTML = '';
-                
-                const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-                
-                // Use currentWeekStart instead of always using today
-                const weekStart = new Date(currentWeekStart);
-                weekStart.setHours(0, 0, 0, 0); // Reset time to start of day
-                
-                // Get today's date for comparison
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                // Calculate the start of the current week (Monday)
-                const actualCurrentWeekStart = new Date(today);
-                const currentDayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-                const daysToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1; // Days to get to Monday
-                actualCurrentWeekStart.setDate(today.getDate() - daysToMonday);
-                actualCurrentWeekStart.setHours(0, 0, 0, 0);
-                
-                // Check if we're viewing the current week
-                const isCurrentWeek = weekStart.getTime() === actualCurrentWeekStart.getTime();
-                
-                // Helper function to format date consistently
-                function formatDateLocal(date) {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                }
-                
-                console.log('Calendar Debug:');
-                console.log('Today:', formatDateLocal(today));
-                console.log('Current Week Start:', formatDateLocal(weekStart));
-                console.log('Actual Current Week Start:', formatDateLocal(actualCurrentWeekStart));
-                console.log('Is Current Week:', isCurrentWeek);
-                
-                // Always show Monday-Friday (5 days)
-                for (let i = 0; i < 5; i++) {
-                    const date = new Date(weekStart);
-                    date.setDate(weekStart.getDate() + i);
-                    
-                    const dateStr = formatDateLocal(date);
-                    console.log(`Day ${i}: ${dateStr} (${dayNames[i]})`);
-                    
-                    // Only filter out past days if we're viewing the current week
-                    if (isCurrentWeek && date < today) {
-                        console.log(`Skipping past day: ${dateStr}`);
-                        continue; // Skip past days only in current week
-                    }
-                    
-                    const dayElement = document.createElement('div');
-                    dayElement.className = 'calendar-day';
-                    dayElement.dataset.date = dateStr;
-                    
-                    const dayNumber = document.createElement('div');
-                    dayNumber.className = 'day-number';
-                    dayNumber.textContent = date.getDate();
-                    
-                    const dayName = document.createElement('div');
-                    dayName.className = 'day-name';
-                    dayName.textContent = dayNames[i]; // Use index instead of date.getDay()
-                    
-                    const daySlots = document.createElement('div');
-                    daySlots.className = 'day-slots';
-                    daySlots.textContent = 'Loading...';
-                    
-                    dayElement.appendChild(dayNumber);
-                    dayElement.appendChild(dayName);
-                    dayElement.appendChild(daySlots);
-                    
-                    // Add click event
-                    dayElement.addEventListener('click', () => openBookingModal(date));
-                    
-                    calendarGrid.appendChild(dayElement);
-                }
-            }
-
-            function updateCalendarSlots() {
-                const dayElements = document.querySelectorAll('.calendar-day');
-                
-                console.log('Available slots:', availableSlots);
-                
-                dayElements.forEach(dayElement => {
-                    const date = dayElement.dataset.date;
-                    const slotsForDay = availableSlots[date] || [];
-                    const slotsElement = dayElement.querySelector('.day-slots');
-                    
-                    console.log(`Checking date ${date}: ${slotsForDay.length} slots`);
-                    
-                    if (slotsForDay.length > 0) {
-                        dayElement.classList.add('available');
-                        dayElement.classList.remove('disabled');
-                        dayElement.style.display = 'block'; // Show days with slots
-                        slotsElement.textContent = `${slotsForDay.length} slots`;
-                        console.log(`Showing ${slotsForDay.length} slots for ${date}`);
-                    } else {
-                        dayElement.style.display = 'none'; // Hide days with no slots
-                        console.log(`Hiding ${date} - no slots`);
-                    }
-                });
-            }
-
-            async function loadWeekSlots() {
-                createCalendarGrid();
-                
-                try {
-                    const config = await loadConfig();
-                    if (!config) throw new Error('Configuration not loaded');
-                    
-                    // Use currentWeekStart instead of always using today
-                    const weekStart = new Date(currentWeekStart);
-                    weekStart.setHours(0, 0, 0, 0);
-                    
-                    // Always show Monday-Friday (5 days)
-                    const endOfWeek = new Date(weekStart);
-                    endOfWeek.setDate(weekStart.getDate() + 4); // Monday + 4 days = Friday
-                    
-                    // Helper function to format date consistently
-                    function formatDateLocal(date) {
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const day = String(date.getDate()).padStart(2, '0');
-                        return `${year}-${month}-${day}`;
-                    }
-                    
-                    const response = await fetch(`/api/available-slots`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            start_date: formatDateLocal(weekStart),
-                            end_date: formatDateLocal(endOfWeek),
-                            service_id: config.serviceId,
-                            unit_id: [4, 10] // Only request slots for units 4 and 10
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (data.result) {
-                        // Group slots by date, but filter out the extra day from adjusted date range
-                        availableSlots = {};
-                        console.log('Received slots from API:', data.result);
-                        
-                        // Get the original requested date range (without the adjustment)
-                        // Use local date format to avoid timezone issues
-                        const originalStartDate = formatDateLocal(weekStart);
-                        const originalEndDate = formatDateLocal(endOfWeek);
-                        
-                        data.result.forEach(slot => {
-                            // Parse slot date using local format
-                            const slotDateStr = slot.start_time.split(' ')[0];
-                            
-                            // Only include slots within the original requested date range
-                            if (slotDateStr >= originalStartDate && slotDateStr <= originalEndDate) {
-                                if (!availableSlots[slotDateStr]) {
-                                    availableSlots[slotDateStr] = [];
-                                }
-                                availableSlots[slotDateStr].push(slot);
-                            }
-                        });
-                        
-                        console.log('Grouped slots by date (filtered, local):', availableSlots);
-                        updateCalendarSlots();
-                    } else {
-                        availableSlots = {};
-                        updateCalendarSlots();
-                    }
-                } catch (error) {
-                    console.error('Error loading calendar:', error);
-                    availableSlots = {};
-                    updateCalendarSlots();
-                }
-            }
-
-            function openBookingModal(date) {
-                // Use local date format to avoid timezone offset issues
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const dateStr = `${year}-${month}-${day}`;
-                
-                const slotsForDay = availableSlots[dateStr] || [];
-                
-                if (slotsForDay.length === 0) {
-                    alert('No available slots for this date');
-                    return;
-                }
-                
-                selectedDate = date;
-                document.getElementById('modalDate').textContent = date.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-                
-                // Display time slots
-                const modalTimeSlots = document.getElementById('modalTimeSlots');
-                modalTimeSlots.innerHTML = '';
-                
-                // Group slots by time to avoid duplicates
-                const timeSlots = {};
-                slotsForDay.forEach(slot => {
-                    // Extract time directly from string to avoid UTC interpretation
-                    // slot.start_time format: "2025-07-02 16:00:00"
-                    const timeKey = slot.start_time.split(' ')[1].slice(0, 5); // "16:00"
-                    if (!timeSlots[timeKey]) {
-                        timeSlots[timeKey] = [];
-                    }
-                    timeSlots[timeKey].push(slot);
-                });
-                
-                // Create time slot elements
-                Object.keys(timeSlots).forEach(timeKey => {
-                    const timeSlot = document.createElement('div');
-                    timeSlot.className = 'time-slot';
-                    timeSlot.textContent = timeKey;
-                    
-                    timeSlot.addEventListener('click', () => {
-                        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-                        timeSlot.classList.add('selected');
-                        selectedSlot = timeSlots[timeKey][0]; // Use first slot as default
-                        showCoachSelection(timeSlots[timeKey]);
-                    });
-                    
-                    modalTimeSlots.appendChild(timeSlot);
-                });
-                
-                document.getElementById('bookingModal').style.display = 'block';
-                document.getElementById('bookingForm').style.display = 'none';
-            }
-
-            function showCoachSelection(slotsForTime) {
-                const modalBody = document.getElementById('bookingModal').querySelector('.booking-modal-body');
-                
-                // Create coach selection HTML
-                const coachSelectionHTML = `
-                    <div class="coach-selection" id="coachSelection">
-                        <h4>Choose Your Coach</h4>
-                        <p style="margin-bottom: 20px; color: #666;">Select the coach you'd like to work with:</p>
-                        <div class="coach-options">
-                            ${slotsForTime.map(slot => {
-                                const coachName = slot.unit_id === 4 ? 'Mason' : 'Josh';
-                                return `
-                                    <div class="coach-option" data-unit-id="${slot.unit_id}" data-slot='${JSON.stringify(slot)}'>
-                                        <div class="coach-avatar">${coachName.charAt(0)}</div>
-                                        <div class="coach-details">
-                                            <h5>${coachName}</h5>
-                                        </div>
-                                        <div class="coach-select-indicator">✓</div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                        <button class="continue-button" id="continueToForm" style="display: none;">Continue to Booking</button>
-                    </div>
-                `;
-                
-                // Replace time slots with coach selection
-                modalBody.innerHTML = coachSelectionHTML;
-                
-                // Add event listeners for coach selection
-                const coachOptions = document.querySelectorAll('.coach-option');
-                const continueButton = document.getElementById('continueToForm');
-                
-                coachOptions.forEach(option => {
-                    option.addEventListener('click', () => {
-                        // Remove selection from all options
-                        coachOptions.forEach(opt => opt.classList.remove('selected'));
-                        // Add selection to clicked option
-                        option.classList.add('selected');
-                        
-                        // Get the selected slot data
-                        const slotData = JSON.parse(option.dataset.slot);
-                        selectedSlot = slotData;
-                        
-                        // Show continue button
-                        continueButton.style.display = 'block';
-                    });
-                });
-                
-                // Continue button event listener
-                continueButton.addEventListener('click', () => {
-                    if (selectedSlot) {
-                        showBookingForm();
-                    }
-                });
-            }
-
-            function showBookingForm() {
-                const modalBody = document.getElementById('bookingModal').querySelector('.booking-modal-body');
-                
-                // Restore the original modal structure with booking form
-                modalBody.innerHTML = `
-                    <div class="time-slots" id="modalTimeSlots">
-                        <!-- Time slots will be loaded here -->
-                    </div>
-                    <div class="booking-form" id="bookingForm">
-                        <h4>Complete Your Booking</h4>
-                        <div class="form-group">
-                            <label for="clientName">Full Name *</label>
-                            <input type="text" id="clientName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientEmail">Email *</label>
-                            <input type="email" id="clientEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientPhone">Phone *</label>
-                            <input type="tel" id="clientPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientNotes">Additional Notes</label>
-                            <textarea id="clientNotes" rows="3"></textarea>
-                        </div>
-                        <button class="book-button" id="confirmBooking">Confirm Booking</button>
-                    </div>
-                `;
-                
-                // Re-add event listener for the confirm booking button
-                document.getElementById('confirmBooking').addEventListener('click', handleBookingConfirmation);
-            }
-
-            function closeModal() {
-                document.getElementById('bookingModal').style.display = 'none';
-                selectedSlot = null;
-                selectedDate = null;
-            }
-
-            async function handleBookingConfirmation() {
-                if (!selectedSlot) {
-                    alert('Please select a time slot');
-                    return;
-                }
-                
-                const name = document.getElementById('clientName').value.trim();
-                const email = document.getElementById('clientEmail').value.trim();
-                const phone = document.getElementById('clientPhone').value.trim();
-                const notes = document.getElementById('clientNotes').value.trim();
-                
-                if (!name || !email || !phone) {
-                    alert('Please fill in all required fields');
-                    return;
-                }
-                
-                const confirmBtn = document.getElementById('confirmBooking');
-                confirmBtn.disabled = true;
-                confirmBtn.textContent = 'Processing...';
-                
-                try {
-                    const config = await loadConfig();
-                    if (!config) throw new Error('Configuration not loaded');
-                    
-                    // Call the booking API
-                    const response = await fetch('/api/book-session', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            start_time: selectedSlot.start_time,
-                            service_id: config.serviceId,
-                            unit_id: selectedSlot.unit_id,
-                            client_name: name,
-                            client_email: email,
-                            client_phone: phone,
-                            client_notes: notes
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        // Show success message
-                        const successMessage = `
-                            <div style="text-align: center; padding: 20px;">
-                                <h3 style="color: #1e3a8a; margin-bottom: 15px;">✅ Booking Confirmed!</h3>
-                                <p style="margin-bottom: 20px;">${result.message}</p>
-                                <p style="margin-bottom: 20px;"><strong>Booking ID:</strong> ${result.booking_id}</p>
-                                <button onclick="closeModal()" 
-                                        style="background: #fbbf24; color: #1e3a8a; padding: 12px 24px; border: none; border-radius: 25px; font-weight: 600; cursor: pointer;">
-                                    Close
-                                </button>
-                            </div>
-                        `;
-                        
-                        document.getElementById('bookingModal').querySelector('.booking-modal-body').innerHTML = successMessage;
-                        
-                        // Refresh the calendar to show updated availability
-                        setTimeout(() => {
-                            loadWeekSlots();
-                        }, 2000);
-                        
-                    } else {
-                        throw new Error(result.error || 'Booking failed');
-                    }
-                    
-                } catch (error) {
-                    console.error('Booking error:', error);
-                    alert('There was an error processing your booking: ' + error.message);
-                } finally {
-                    confirmBtn.disabled = false;
-                    confirmBtn.textContent = 'Confirm Booking';
-                }
-            }
+            
 
             async function loadConfig() {
                 try {
@@ -5792,6 +5312,50 @@
       </div>
     </section>
 
+    <!-- FAQ JavaScript - Ensure it runs after the FAQ elements are loaded -->
+    <script>
+        // Initialize FAQ functionality
+        function initializeFAQs() {
+            const faqCards = document.querySelectorAll('.faq-card');
+            
+            faqCards.forEach(card => {
+                const question = card.querySelector('.faq-question');
+                const answer = card.querySelector('.faq-answer');
+                
+                question.addEventListener('click', () => {
+                    const isActive = card.classList.contains('active');
+                    
+                    // Close all other FAQs
+                    faqCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            otherCard.classList.remove('active');
+                            otherCard.querySelector('.faq-answer').classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current FAQ
+                    if (!isActive) {
+                        card.classList.add('active');
+                        answer.classList.add('active');
+                        
+                        // Add entrance animation
+                        answer.style.animation = 'fadeInUp 0.4s ease-out';
+                    } else {
+                        card.classList.remove('active');
+                        answer.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // Initialize FAQs when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeFAQs);
+        } else {
+            initializeFAQs();
+        }
+    </script>
+
     <!-- FOR PARENTS LIKE YOU SECTION -->
     <section class="parents-section">
       <div class="container">
@@ -5840,6 +5404,84 @@
       </div>
     </section>
 
+    <!-- Brain-Heart-Gut JavaScript - Ensure it runs after the diagram elements are loaded -->
+    <script>
+        // Initialize Brain-Heart-Gut interactions
+        function initializePhilosophyInteractions() {
+            // Get all interactive elements
+            const hotspots = document.querySelectorAll('.bhg-hotspot');
+            const annotations = document.querySelectorAll('.bhg-annotation');
+            const closeButtons = document.querySelectorAll('.close-annotation');
 
+            // Add click handlers for hotspots
+            hotspots.forEach(hotspot => {
+                hotspot.addEventListener('click', function() {
+                    const type = this.classList.contains('brain') ? 'brain' : 
+                               this.classList.contains('heart') ? 'heart' : 'gut';
+                    
+                    // Show corresponding annotation
+                    showAnnotation(type);
+                    
+                    // Add visual feedback to hotspot
+                    this.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+
+            // Add close handlers for annotations
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    hideAllAnnotations();
+                });
+            });
+
+            // Close annotations when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.bhg-hotspot') && 
+                    !e.target.closest('.bhg-annotation')) {
+                    hideAllAnnotations();
+                }
+            });
+        }
+
+        function showAnnotation(type) {
+            // Hide all annotations first
+            hideAllAnnotations();
+            
+            // Show the selected annotation
+            const annotation = document.querySelector(`.${type}-annotation`);
+            if (annotation) {
+                annotation.classList.add('active');
+                
+                // Show corresponding gold line
+                const goldLine = document.querySelector(`.${type}-line`);
+                if (goldLine) {
+                    goldLine.classList.add('active');
+                }
+            }
+        }
+
+        function hideAllAnnotations() {
+            const annotations = document.querySelectorAll('.bhg-annotation');
+            const goldLines = document.querySelectorAll('.gold-line');
+            
+            annotations.forEach(annotation => {
+                annotation.classList.remove('active');
+            });
+            
+            goldLines.forEach(line => {
+                line.classList.remove('active');
+            });
+        }
+
+        // Initialize Brain-Heart-Gut interactions when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePhilosophyInteractions);
+        } else {
+            initializePhilosophyInteractions();
+        }
+    </script>
 </body>
 </html>
