@@ -143,7 +143,7 @@
         }
 
         /* Video Container */
-        .video-container {
+        .video-container1 {
             position: relative;
             margin: 3rem auto;
             border: 2px solid var(--gold);
@@ -159,7 +159,7 @@
             overflow: hidden;
         }
         
-        .video-container iframe {
+        .video-container1 iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -168,7 +168,7 @@
             border: none;
         }
 
-        .video-container:hover {
+        .video-container1:hover {
             transform: scale(1.02);
             box-shadow: 0 0 150px rgba(251, 191, 36, 0.5);
         }
@@ -2449,7 +2449,7 @@
         }
 
         @media (max-width: 768px) {
-            .video-container {
+            .video-container1 {
                 max-width: 80vw;
                 width: 80%;
                 margin: 0.5rem auto 0 auto;
@@ -2636,47 +2636,7 @@
             animation: fadeInUp 1s 0.4s forwards;
         }
 
-        /* WHY MOST KIDS PLATEAU SECTION (NEW) */
-        .plateau-section {
-          background: var(--white);
-          padding: 40px;
-          border-radius: 20px;
-          box-shadow: 0 4px 24px rgba(30,58,138,0.10);
-          margin-top: 40px;
-          text-align: center;
-         
-          
-        }
-        .plateau-content {
-          max-width: 100%;
-          margin: 0 auto;
-          color: var(--royal-blue);
-        }
-        .plateau-icon {
-          font-size: 3rem;
-          color: var(--gold);
-          margin-bottom: 20px;
-        }
-        .plateau-title {
-          font-size: 2rem;
-          font-weight: 700;
-          margin-bottom: 20px;
-          color: var(--royal-blue);
-        }
-        .plateau-list {
-          list-style: none;
-          padding-left: 0;
-        }
-        .plateau-bullet {
-          font-size: 1.5rem;
-          color: var(--gold);
-          margin-bottom: 10px;
-        }
-        .plateau-highlight {
-          font-size: 1.2rem;
-          color: var(--royal-blue);
-          margin-top: 20px;
-        }
+ 
 
         /* WHAT YOU GET IN THE £30 DIAGNOSIS SESSION SECTION (NEW) */
         .diagnosis-session-section {
@@ -4053,16 +4013,20 @@
         }
 
         .coach-image-container {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            position: relative;
-            overflow: hidden;
-            z-index: 3;
-            border: 3px solid rgba(251, 191, 36, 0.3);
-            transition: all 0.4s ease;
+          width: 400px;
+          aspect-ratio: 1 / 1;              /* Ensures square base */
+          border-radius: 50%;
+          margin: 0 auto 25px;
+          position: relative;
+          overflow: hidden;
+          z-index: 3;
+          border: 3px solid rgba(251, 191, 36, 0.3);
+          transition: all 0.4s ease;
+          display: flex;                    /* Makes sure content inside can be centered */
+          align-items: center;
+          justify-content: center;
         }
+        
 
         .coach-card:hover .coach-image-container {
             border-color: var(--gold);
@@ -4319,6 +4283,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            justify-content: center;
         }
 
         .cta-button:hover {
@@ -4381,6 +4346,9 @@
 
             .cta-content {
                 padding: 30px 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
             .cta-content h3 {
@@ -4454,6 +4422,363 @@
     <script src="https://widget.simplybook.me/v2/widget/widget.js"></script>
 </head>
 <body>
+  <!-- Add this CSS to your existing <style> section -->
+<style>
+  /* === FLOATING BOOK NOW BUTTON - MOBILE ONLY === */
+  .floating-book-now {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: none; /* Hidden by default, shown only on mobile */
+      pointer-events: none; /* Allow clicks to pass through the container */
+  }
+  
+  .floating-book-btn {
+      background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 50%, var(--gold) 100%);
+      color: var(--royal-blue);
+      border: none;
+      border-radius: 50px;
+      padding: 18px 35px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+          0 8px 25px rgba(251, 191, 36, 0.4),
+          0 4px 15px rgba(0, 0, 0, 0.2),
+          0 0 0 0 rgba(251, 191, 36, 0.7);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      pointer-events: auto; /* Re-enable clicks on the button itself */
+      backdrop-filter: blur(10px);
+      animation: 
+          buttonPulse 3s ease-in-out infinite,
+          buttonBounce 0.6s ease-out;
+  }
+  
+  /* Entrance animation */
+  @keyframes buttonBounce {
+      0% {
+          opacity: 0;
+          transform: translateY(100px) scale(0.8);
+      }
+      60% {
+          opacity: 1;
+          transform: translateY(-10px) scale(1.05);
+      }
+      100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+      }
+  }
+  
+  /* Continuous pulse animation */
+  @keyframes buttonPulse {
+      0%, 100% { 
+          box-shadow: 
+              0 8px 25px rgba(251, 191, 36, 0.4),
+              0 4px 15px rgba(0, 0, 0, 0.2),
+              0 0 0 0 rgba(251, 191, 36, 0.7);
+      }
+      50% { 
+          box-shadow: 
+              0 12px 35px rgba(251, 191, 36, 0.6),
+              0 6px 20px rgba(0, 0, 0, 0.3),
+              0 0 0 10px rgba(251, 191, 36, 0);
+      }
+  }
+  
+  /* Hover effects */
+  .floating-book-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 
+          0 15px 40px rgba(251, 191, 36, 0.6),
+          0 8px 25px rgba(0, 0, 0, 0.3),
+          0 0 0 0 rgba(251, 191, 36, 0.7);
+  }
+  
+  /* Active/tap effect */
+  .floating-book-btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 
+          0 5px 15px rgba(251, 191, 36, 0.4),
+          0 2px 8px rgba(0, 0, 0, 0.2),
+          0 0 0 0 rgba(251, 191, 36, 0.7);
+  }
+  
+  /* Shimmer effect */
+  .floating-book-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+      );
+      transition: left 0.5s ease;
+      border-radius: 50px;
+  }
+  
+  .floating-book-btn:hover::before {
+      left: 100%;
+  }
+  
+  /* Glowing ring animation */
+  .floating-book-btn::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--gold), #f59e0b, var(--gold));
+      border-radius: 50px;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+      animation: ringRotate 3s linear infinite;
+  }
+  
+  @keyframes ringRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+  
+  .floating-book-btn:hover::after {
+      opacity: 0.8;
+  }
+  
+  /* Icon inside button */
+  .btn-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
+      background: radial-gradient(circle, rgba(30, 58, 138, 0.9) 0%, rgba(30, 58, 138, 0.6) 100%);
+      border-radius: 50%;
+      position: relative;
+      vertical-align: middle;
+      animation: iconSpin 4s ease-in-out infinite;
+  }
+  
+  @keyframes iconSpin {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+  }
+  
+  .btn-icon::after {
+      content: '⚡';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      color: var(--gold);
+  }
+  
+  /* Urgent pulse for extra attention */
+  .floating-book-btn.urgent {
+      animation: 
+          buttonPulse 3s ease-in-out infinite,
+          buttonBounce 0.6s ease-out,
+          urgentShake 0.5s ease-in-out infinite;
+  }
+  
+  @keyframes urgentShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+  }
+  
+  /* Show only on mobile */
+  @media (max-width: 768px) {
+      .floating-book-now {
+          display: block;
+      }
+      
+      /* Add bottom padding to body to prevent content overlap */
+      body {
+          padding-bottom: 90px;
+      }
+      
+      /* Smaller button on very small screens */
+      @media (max-width: 480px) {
+          .floating-book-btn {
+              padding: 16px 30px;
+              font-size: 1.1rem;
+          }
+          
+          .btn-icon {
+              width: 18px;
+              height: 18px;
+          }
+          
+          .btn-icon::after {
+              font-size: 11px;
+          }
+      }
+  }
+  
+  /* Hide on desktop */
+  @media (min-width: 769px) {
+      .floating-book-now {
+          display: none !important;
+      }
+      
+      body {
+          padding-bottom: 0;
+      }
+  }
+  
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+      .floating-book-btn {
+          animation: none;
+      }
+      
+      .floating-book-btn::after {
+          animation: none;
+      }
+      
+      .btn-icon {
+          animation: none;
+      }
+  }
+  
+  /* Safe area adjustments for phones with notches */
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .floating-book-now {
+          bottom: calc(20px + env(safe-area-inset-bottom));
+      }
+  }
+  </style>
+  
+  <!-- Floating Book Now Button - Add this HTML anywhere in your body -->
+  <div class="floating-book-now" id="floatingBookNow">
+      <button class="floating-book-btn" id="floatingBookBtn">
+          Book Now
+          <span class="btn-icon"></span>
+      </button>
+  </div>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const floatingBtn = document.getElementById('floatingBookBtn');
+      const floatingContainer = document.getElementById('floatingBookNow');
+      
+      if (floatingBtn) {
+          // Smooth scroll to booking section
+          floatingBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              
+              // Add click feedback
+              this.style.transform = 'scale(0.95)';
+              setTimeout(() => {
+                  this.style.transform = '';
+              }, 150);
+              
+              // Find booking section and scroll to it
+              const bookingSection = document.querySelector('.booking-section') || 
+                                   document.querySelector('#booking') ||
+                                   document.querySelector('[id*="book"]') ||
+                                   document.querySelector('.booking');
+                                   
+              if (bookingSection) {
+                  bookingSection.scrollIntoView({ 
+                      behavior: 'smooth',
+                      block: 'start'
+                  });
+                  
+                  // Add urgent class for extra attention after scroll
+                  setTimeout(() => {
+                      this.classList.add('urgent');
+                      setTimeout(() => {
+                          this.classList.remove('urgent');
+                      }, 3000);
+                  }, 1000);
+              } else {
+                  // Fallback: scroll to bottom of page
+                  window.scrollTo({
+                      top: document.body.scrollHeight,
+                      behavior: 'smooth'
+                  });
+              }
+          });
+          
+          // Enhanced touch interactions for mobile
+          floatingBtn.addEventListener('touchstart', function(e) {
+              this.style.transform = 'scale(0.98)';
+          }, { passive: true });
+          
+          floatingBtn.addEventListener('touchend', function() {
+              setTimeout(() => {
+                  this.style.transform = '';
+              }, 100);
+          });
+          
+          // Hide button when near booking section
+          const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      floatingContainer.style.opacity = '0.3';
+                      floatingContainer.style.pointerEvents = 'none';
+                  } else {
+                      floatingContainer.style.opacity = '1';
+                      floatingContainer.style.pointerEvents = 'auto';
+                  }
+              });
+          }, {
+              threshold: 0.3,
+              rootMargin: '0px 0px -100px 0px'
+          });
+          
+          // Observe booking section if it exists
+          const bookingSection = document.querySelector('.booking-section') || 
+                               document.querySelector('#booking') ||
+                               document.querySelector('[id*="book"]');
+                               
+          if (bookingSection) {
+              observer.observe(bookingSection);
+          }
+          
+          // Add periodic attention animation
+          setInterval(() => {
+              if (window.scrollY > 500) { // Only animate if user has scrolled down
+                  floatingBtn.style.animation = 'none';
+                  setTimeout(() => {
+                      floatingBtn.style.animation = 'buttonPulse 3s ease-in-out infinite';
+                  }, 50);
+              }
+          }, 15000); // Every 15 seconds
+          
+          // Hide button when keyboard is open (mobile)
+          let initialViewportHeight = window.innerHeight;
+          
+          window.addEventListener('resize', () => {
+              const currentViewportHeight = window.innerHeight;
+              const heightDifference = initialViewportHeight - currentViewportHeight;
+              
+              if (heightDifference > 150) { // Keyboard likely open
+                  floatingContainer.style.transform = 'translateX(-50%) translateY(100px)';
+                  floatingContainer.style.opacity = '0';
+              } else {
+                  floatingContainer.style.transform = 'translateX(-50%) translateY(0)';
+                  floatingContainer.style.opacity = '1';
+              }
+          });
+      }
+  });
+  </script>
     <div class="cosmic-bg" id="cosmicBg"></div>
     <!-- Fixed top nav for desktop -->
     <div class="desktop-nav">
@@ -4465,7 +4790,7 @@
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="title">Unlock Your Inner Performance</h1>
-            <div class="video-container" id="videoContainer">
+            <div class="video-container1" id="videoContainer1">
                  <iframe 
                     src="https://www.youtube.com/embed/cPRyJAUJf7g?autoplay=1&controls=1&rel=0&modestbranding=1" 
                     title="Child Development Assessment"
@@ -4892,46 +5217,1250 @@
           </section>
           <!-- END DIAGNOSIS VALUE TABLE SECTION -->
 
-    <!-- TRUST SECTION -->
-    <section class="trust-section">
-        <div class="container">
-            <div class="trust-points">
-                <div class="trust-point">
-                    <div class="trust-icon"><svg width="40" height="40" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-                    <h3>Precise Assessment</h3>
-                    <p>Our comprehensive evaluation process uses the latest diagnostic tools and techniques to provide accurate, actionable insights about your child's development.</p>
-                </div>
-                <div class="trust-point">
-                    <div class="trust-icon"><svg width="40" height="40" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 21C7 17 2 13.5 2 8.5A6.5 6.5 0 0 1 12 3a6.5 6.5 0 0 1 10 5.5c0 5-5 8.5-10 12.5z"/></svg></div>
-                    <h3>Family-Centered Approach</h3>
-                    <p>We understand that every family is unique. Our sessions are tailored to your specific concerns, cultural background, and family dynamics.</p>
-                </div>
-                <div class="trust-point">
-                    <div class="trust-icon"><svg width="40" height="40" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-                    <h3>Clear Action Plan</h3>
-                    <p>Leave with a detailed roadmap including specific strategies, resources, and next steps to support your child's growth and development.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
-    <!-- TESTIMONIAL SECTION -->
-    <section class="testimonial-section">
-        <div class="container">
-            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 50px; color: var(--gold);">What Parents Are Saying</h2>
-            <div class="testimonial-carousel">
-                <div class="testimonial" id="testimonial">
-                    <p class="testimonial-text">"Dr. Mitchell's assessment gave us the clarity we desperately needed. For the first time, we understood our son's challenges and had a clear path forward. The difference in our family has been remarkable."</p>
-                    <p class="testimonial-author">- Jennifer R., Mother of 7-year-old</p>
-                </div>
-                <div class="carousel-dots">
-                    <span class="dot active" data-index="0"></span>
-                    <span class="dot" data-index="1"></span>
-                    <span class="dot" data-index="2"></span>
-                </div>
-            </div>
-        </div>
-    </section>
+    <style>
+      /* === VARIABLES === */
+      :root {
+          --royal-blue: #1e3a8a;
+          --gold: #fbbf24;
+          --white: #ffffff;
+          --dark-blue: #0f172a;
+          --light-gold: #fef3c7;
+      }
+
+      /* === TESTIMONIALS SECTION - YEAR 3000 FOOTBALL TECH === */
+      .testimonials-section {
+          background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+          padding: 120px 0 80px 0;
+          position: relative;
+          overflow: hidden;
+          min-height: 100vh;
+      }
+
+      /* Animated tech background */
+      .tech-field-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          background: 
+              radial-gradient(circle at 25% 25%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, rgba(251, 191, 36, 0.06) 0%, transparent 50%),
+              linear-gradient(45deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 23, 42, 0.4) 100%);
+      }
+
+      /* Holographic football field lines */
+      .field-lines {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: 
+              linear-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(251, 191, 36, 0.1) 1px, transparent 1px),
+              radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 40%);
+          background-size: 80px 80px, 80px 80px, 400px 400px;
+          animation: fieldMove 25s linear infinite;
+          opacity: 0.4;
+      }
+
+      @keyframes fieldMove {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          100% { transform: translate(80px, 80px) rotate(1deg); }
+      }
+
+      /* Floating tech orbs */
+      .tech-orbs {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+      }
+
+      .tech-orb {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: var(--gold);
+          border-radius: 50%;
+          box-shadow: 0 0 20px var(--gold), 0 0 40px rgba(251, 191, 36, 0.3);
+          animation: orbFloat 12s ease-in-out infinite;
+      }
+
+      .tech-orb:nth-child(1) {
+          top: 20%;
+          left: 15%;
+          animation-delay: 0s;
+          animation-duration: 15s;
+      }
+
+      .tech-orb:nth-child(2) {
+          top: 40%;
+          right: 20%;
+          animation-delay: 3s;
+          animation-duration: 18s;
+      }
+
+      .tech-orb:nth-child(3) {
+          bottom: 30%;
+          left: 25%;
+          animation-delay: 6s;
+          animation-duration: 12s;
+      }
+
+      .tech-orb:nth-child(4) {
+          bottom: 20%;
+          right: 15%;
+          animation-delay: 9s;
+          animation-duration: 16s;
+      }
+
+      @keyframes orbFloat {
+          0%, 100% { 
+              transform: translateY(0px) translateX(0px) scale(1);
+              opacity: 0.6;
+          }
+          25% { 
+              transform: translateY(-30px) translateX(20px) scale(1.3);
+              opacity: 1;
+          }
+          50% { 
+              transform: translateY(-15px) translateX(-25px) scale(0.8);
+              opacity: 0.8;
+          }
+          75% { 
+              transform: translateY(-40px) translateX(15px) scale(1.2);
+              opacity: 1;
+          }
+      }
+
+      /* Header section */
+      .testimonials-header {
+          text-align: center;
+          margin-bottom: 80px;
+          position: relative;
+          z-index: 2;
+          animation: headerGlow 1.5s ease-out;
+      }
+
+      @keyframes headerGlow {
+          0% {
+              opacity: 0;
+              transform: translateY(50px) scale(0.9);
+          }
+          100% {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+          }
+      }
+
+      .testimonials-title {
+          font-size: clamp(2.5rem, 7vw, 5rem);
+          font-weight: 900;
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 30%, var(--gold) 70%, #fbbf24 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 25px;
+          letter-spacing: -0.03em;
+          text-shadow: 0 8px 32px rgba(251, 191, 36, 0.4);
+          position: relative;
+          animation: titlePulse 4s ease-in-out infinite;
+      }
+
+      @keyframes titlePulse {
+          0%, 100% { 
+              filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+          }
+          50% { 
+              filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.8));
+          }
+      }
+
+      .title-emblem {
+          font-size: 3.5rem;
+          margin-right: 25px;
+          filter: drop-shadow(0 0 25px var(--gold));
+          animation: emblemRotate 6s ease-in-out infinite;
+          display: inline-block;
+      }
+
+      @keyframes emblemRotate {
+          0%, 100% { 
+              transform: scale(1) rotate(0deg);
+              filter: drop-shadow(0 0 25px var(--gold));
+          }
+          25% { 
+              transform: scale(1.1) rotate(5deg);
+              filter: drop-shadow(0 0 35px var(--gold));
+          }
+          75% { 
+              transform: scale(1.05) rotate(-3deg);
+              filter: drop-shadow(0 0 30px var(--gold));
+          }
+      }
+
+      .testimonials-subtitle {
+          font-size: 1.6rem;
+          color: var(--light-gold);
+          margin-bottom: 50px;
+          opacity: 0.95;
+          font-weight: 500;
+          text-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+          animation: subtitleFade 2s ease-out 0.5s both;
+      }
+
+      @keyframes subtitleFade {
+          0% {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+          100% {
+              opacity: 0.95;
+              transform: translateY(0);
+          }
+      }
+
+      /* Main testimonials grid */
+      .testimonials-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          gap: 50px;
+          max-width: 1400px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 2;
+          padding: 0 20px;
+      }
+
+      /* Individual testimonial cards */
+      .testimonial-card {
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(25px);
+          border: 1px solid rgba(251, 191, 36, 0.2);
+          border-radius: 30px;
+          padding: 0;
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: translateY(0);
+          animation: cardEntry 1s ease-out;
+      }
+
+      .testimonial-card:nth-child(1) { animation-delay: 0.2s; }
+      .testimonial-card:nth-child(2) { animation-delay: 0.4s; }
+      .testimonial-card:nth-child(3) { animation-delay: 0.6s; }
+
+      @keyframes cardEntry {
+          0% {
+              opacity: 0;
+              transform: translateY(60px) scale(0.8);
+          }
+          100% {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+          }
+      }
+
+      .testimonial-card:hover {
+          transform: translateY(-20px) scale(1.05);
+          border-color: var(--gold);
+          box-shadow: 
+              0 30px 60px rgba(251, 191, 36, 0.25),
+              0 0 0 3px rgba(251, 191, 36, 0.1),
+              0 0 50px rgba(251, 191, 36, 0.4);
+      }
+
+      /* Holographic effect on hover */
+      .testimonial-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+          transition: left 0.8s ease;
+          z-index: 1;
+      }
+
+      .testimonial-card:hover::before {
+          left: 100%;
+      }
+
+      /* Tech border animation */
+      .card-tech-frame {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 2;
+      }
+
+      .frame-line {
+          position: absolute;
+          background: linear-gradient(90deg, transparent, var(--gold), transparent);
+          opacity: 0;
+          transition: all 0.5s ease;
+      }
+
+      .frame-line.top {
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          transform: scaleX(0);
+          transform-origin: left;
+      }
+
+      .frame-line.right {
+          top: 0;
+          right: 0;
+          width: 2px;
+          height: 100%;
+          transform: scaleY(0);
+          transform-origin: top;
+      }
+
+      .frame-line.bottom {
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          transform: scaleX(0);
+          transform-origin: right;
+      }
+
+      .frame-line.left {
+          top: 0;
+          left: 0;
+          width: 2px;
+          height: 100%;
+          transform: scaleY(0);
+          transform-origin: bottom;
+      }
+
+      .testimonial-card:hover .frame-line {
+          opacity: 1;
+      }
+
+      .testimonial-card:hover .frame-line.top {
+          transform: scaleX(1);
+          transition-delay: 0s;
+      }
+
+      .testimonial-card:hover .frame-line.right {
+          transform: scaleY(1);
+          transition-delay: 0.1s;
+      }
+
+      .testimonial-card:hover .frame-line.bottom {
+          transform: scaleX(1);
+          transition-delay: 0.2s;
+      }
+
+      .testimonial-card:hover .frame-line.left {
+          transform: scaleY(1);
+          transition-delay: 0.3s;
+      }
+
+      /* Video container */
+      .video-container {
+          position: relative;
+          width: 100%;
+          padding-bottom: 56.25%; /* 16:9 aspect ratio */
+          height: 0;
+          overflow: hidden;
+          border-radius: 30px 30px 0 0;
+          background: rgba(15, 23, 42, 0.8);
+      }
+
+      .video-container iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+          border-radius: 30px 30px 0 0;
+          transition: all 0.4s ease;
+      }
+
+      .testimonial-card:hover .video-container iframe {
+          transform: scale(1.05);
+      }
+
+      /* Holographic play overlay */
+      .video-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, transparent 50%, rgba(251, 191, 36, 0.05) 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: all 0.4s ease;
+          pointer-events: none;
+          border-radius: 30px 30px 0 0;
+      }
+
+      .testimonial-card:hover .video-overlay {
+          opacity: 1;
+      }
+
+      .holographic-play {
+          width: 80px;
+          height: 80px;
+          background: rgba(251, 191, 36, 0.9);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), 0 0 60px rgba(251, 191, 36, 0.3);
+          animation: playPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes playPulse {
+          0%, 100% { 
+              transform: scale(1);
+              box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), 0 0 60px rgba(251, 191, 36, 0.3);
+          }
+          50% { 
+              transform: scale(1.1);
+              box-shadow: 0 0 40px rgba(251, 191, 36, 0.8), 0 0 80px rgba(251, 191, 36, 0.5);
+          }
+      }
+
+      .play-triangle {
+          width: 0;
+          height: 0;
+          border-left: 25px solid var(--royal-blue);
+          border-top: 15px solid transparent;
+          border-bottom: 15px solid transparent;
+          margin-left: 8px;
+      }
+
+      /* Content section */
+      .testimonial-content {
+          padding: 40px 35px;
+          position: relative;
+          z-index: 3;
+      }
+
+      /* Parent info */
+      .parent-info {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          margin-bottom: 25px;
+      }
+
+      .parent-avatar {
+          width: 70px;
+          height: 70px;
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          font-weight: 800;
+          color: var(--royal-blue);
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+          transition: all 0.3s ease;
+      }
+
+      .testimonial-card:hover .parent-avatar {
+          transform: scale(1.1) rotate(5deg);
+          box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+      }
+
+      .parent-avatar::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+          transition: left 0.6s ease;
+      }
+
+      .testimonial-card:hover .parent-avatar::before {
+          left: 100%;
+      }
+
+      .parent-details h4 {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: var(--white);
+          margin: 0 0 5px 0;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .parent-role {
+          font-size: 1rem;
+          color: var(--light-gold);
+          opacity: 0.9;
+          font-weight: 500;
+      }
+
+      /* Quote section */
+      .quote-section {
+          position: relative;
+          padding: 25px 0;
+      }
+
+      .quote-mark {
+          position: absolute;
+          top: -10px;
+          left: -5px;
+          font-size: 4rem;
+          color: var(--gold);
+          opacity: 0.3;
+          font-family: serif;
+          line-height: 1;
+      }
+
+      .testimonial-quote {
+          font-size: 1.2rem;
+          color: var(--white);
+          line-height: 1.7;
+          font-style: italic;
+          margin: 0;
+          position: relative;
+          z-index: 2;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Quote highlight effect */
+      .quote-highlight {
+          background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
+          border-left: 4px solid var(--gold);
+          padding: 20px 25px;
+          border-radius: 0 15px 15px 0;
+          position: relative;
+          overflow: hidden;
+      }
+
+      .quote-highlight::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(45deg, rgba(251, 191, 36, 0.05) 0%, transparent 50%);
+          pointer-events: none;
+      }
+
+      /* Rating stars */
+      .rating-display {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 20px;
+      }
+
+      .star {
+          font-size: 1.5rem;
+          color: var(--gold);
+          filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+          animation: starTwinkle 3s ease-in-out infinite;
+      }
+
+      .star:nth-child(1) { animation-delay: 0s; }
+      .star:nth-child(2) { animation-delay: 0.2s; }
+      .star:nth-child(3) { animation-delay: 0.4s; }
+      .star:nth-child(4) { animation-delay: 0.6s; }
+      .star:nth-child(5) { animation-delay: 0.8s; }
+
+      @keyframes starTwinkle {
+          0%, 100% { 
+              transform: scale(1);
+              filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+          }
+          50% { 
+              transform: scale(1.2);
+              filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.9));
+          }
+      }
+
+      .rating-text {
+          font-size: 0.9rem;
+          color: var(--light-gold);
+          margin-left: 5px;
+          font-weight: 600;
+      }
+
+      /* CTA section */
+      .testimonials-cta {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          margin-top: 80px;
+          position: relative;
+          z-index: 2;
+          animation: ctaGlow 2s ease-out 1s both;
+      }
+
+      @keyframes ctaGlow {
+          0% {
+              opacity: 0;
+              transform: translateY(30px) scale(0.9);
+          }
+          100% {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+          }
+      }
+
+      .cta-container {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(25px);
+          border: 2px solid rgba(251, 191, 36, 0.3);
+          border-radius: 30px;
+          padding: 50px 40px;
+          display: inline-block;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.5s ease;
+      }
+
+      .cta-container:hover {
+          border-color: var(--gold);
+          box-shadow: 0 25px 50px rgba(251, 191, 36, 0.3);
+          transform: translateY(-10px);
+      }
+
+      .cta-container::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+          transition: left 0.8s ease;
+      }
+
+      .cta-container:hover::before {
+          left: 100%;
+      }
+
+      .cta-title {
+          font-size: 2.2rem;
+          font-weight: 800;
+          color: var(--white);
+          margin-bottom: 20px;
+          text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      .cta-subtitle {
+          font-size: 1.2rem;
+          color: var(--light-gold);
+          margin-bottom: 35px;
+          line-height: 1.6;
+      }
+
+      .future-button {
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 50%, var(--gold) 100%);
+          color: var(--royal-blue);
+          border: none;
+          border-radius: 50px;
+          padding: 20px 50px;
+          font-size: 1.3rem;
+          font-weight: 800;
+          cursor: pointer;
+          transition: all 0.4s ease;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .future-button:hover {
+          transform: translateY(-5px) scale(1.05);
+          box-shadow: 0 20px 40px rgba(251, 191, 36, 0.6);
+      }
+
+      .future-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+          transition: left 0.5s ease;
+      }
+
+      .future-button:hover::before {
+          left: 100%;
+      }
+
+      .button-icon {
+          width: 25px;
+          height: 25px;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+          border-radius: 50%;
+          animation: iconPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes iconPulse {
+          0%, 100% { 
+              transform: scale(1);
+              box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+          }
+          50% { 
+              transform: scale(1.2);
+              box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+          }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+          .testimonials-section {
+              padding: 80px 0 60px 0;
+          }
+
+          .testimonials-grid {
+              grid-template-columns: 1fr;
+              gap: 40px;
+              padding: 0 15px;
+          }
+
+          .testimonial-card {
+              border-radius: 25px;
+          }
+
+          .video-container,
+          .video-container iframe {
+              border-radius: 25px 25px 0 0;
+          }
+
+          .testimonials-title {
+              font-size: 2.5rem;
+          }
+
+          .title-emblem {
+              font-size: 2.5rem;
+              margin-right: 15px;
+          }
+
+          .testimonials-subtitle {
+              font-size: 1.2rem;
+              padding: 0 20px;
+          }
+
+          .testimonial-content {
+              padding: 30px 25px;
+          }
+
+          .parent-info {
+              gap: 15px;
+          }
+
+          .parent-avatar {
+              width: 60px;
+              height: 60px;
+              font-size: 1.6rem;
+          }
+
+          .parent-details h4 {
+              font-size: 1.2rem;
+          }
+
+          .testimonial-quote {
+              font-size: 1.1rem;
+          }
+
+          .quote-highlight {
+              padding: 15px 20px;
+          }
+
+          .cta-container {
+              padding: 40px 25px;
+              margin: 0 15px;
+          }
+
+          .cta-title {
+              font-size: 1.8rem;
+          }
+
+          .cta-subtitle {
+              font-size: 1.1rem;
+          }
+
+          .future-button {
+              padding: 18px 40px;
+              font-size: 1.1rem;
+              justify-content: center;
+          }
+
+          .holographic-play {
+              width: 60px;
+              height: 60px;
+          }
+
+          .play-triangle {
+              border-left-width: 20px;
+              border-top-width: 12px;
+              border-bottom-width: 12px;
+              margin-left: 6px;
+          }
+
+          /* Enhanced mobile touch interactions */
+          .testimonial-card {
+              touch-action: manipulation;
+          }
+
+          .testimonial-card:active {
+              transform: scale(0.98);
+          }
+
+          .future-button:active {
+              transform: scale(0.95);
+          }
+      }
+
+      /* Extra small screens */
+      @media (max-width: 480px) {
+          .testimonials-grid {
+              grid-template-columns: 1fr;
+              gap: 30px;
+              padding: 0 10px;
+          }
+
+          .testimonial-content {
+              padding: 25px 20px;
+          }
+
+          .testimonial-quote {
+              font-size: 1rem;
+          }
+
+          .cta-container {
+              padding: 30px 20px;
+          }
+
+          .future-button {
+              padding: 16px 30px;
+              font-size: 1rem;
+              flex-direction: column;
+              gap: 8px;
+          }
+      }
+  </style>
+</head>
+<body>
+  <!-- TESTIMONIALS SECTION - YEAR 3000 FOOTBALL TECH -->
+  <section class="testimonials-section">
+      <div class="tech-field-bg">
+          <div class="field-lines"></div>
+          <div class="tech-orbs">
+              <div class="tech-orb"></div>
+              <div class="tech-orb"></div>
+              <div class="tech-orb"></div>
+              <div class="tech-orb"></div>
+          </div>
+      </div>
+
+      <div class="container">
+          <div class="testimonials-header">
+              <h2 class="testimonials-title">
+                  <span class="title-emblem">⚽</span>
+                  REAL RESULTS FROM REAL FAMILIES
+              </h2>
+              <p class="testimonials-subtitle">
+                  See how our holistic approach transforms young footballers — and their entire families
+              </p>
+          </div>
+
+          <div class="testimonials-grid">
+              <!-- Testimonial 1: Jonathan (Liyon's dad) -->
+              <div class="testimonial-card">
+                  <div class="card-tech-frame">
+                      <div class="frame-line top"></div>
+                      <div class="frame-line right"></div>
+                      <div class="frame-line bottom"></div>
+                      <div class="frame-line left"></div>
+                  </div>
+                  
+                  <div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/w38IWtwbb6o?si=oSD3DMGCq3jIaUuZ&rel=0&modestbranding=1" 
+                          title="Jonathan testimonial"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                      <div class="video-overlay">
+                          <div class="holographic-play">
+                              <div class="play-triangle"></div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="testimonial-content">
+                      <div class="parent-info">
+                          <div class="parent-avatar">J</div>
+                          <div class="parent-details">
+                              <h4>Jonathan</h4>
+                              <div class="parent-role">Liyon's Father</div>
+                          </div>
+                      </div>
+                      
+                      <div class="quote-section">
+                          <div class="quote-mark">"</div>
+                          <div class="quote-highlight">
+                              <p class="testimonial-quote">
+                                  "With all the work that we have done with inner performance. It's impossible that my son is not good."
+                              </p>
+                          </div>
+                      </div>
+                      
+                      <div class="rating-display">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="rating-text">Incredible Results</span>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Testimonial 2: Nathan (Ollie's Dad) -->
+              <div class="testimonial-card">
+                  <div class="card-tech-frame">
+                      <div class="frame-line top"></div>
+                      <div class="frame-line right"></div>
+                      <div class="frame-line bottom"></div>
+                      <div class="frame-line left"></div>
+                  </div>
+                  
+                  <div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/Hqsa_LgWYog?rel=0&modestbranding=1" 
+                          title="Nathan testimonial"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                      <div class="video-overlay">
+                          <div class="holographic-play">
+                              <div class="play-triangle"></div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="testimonial-content">
+                      <div class="parent-info">
+                          <div class="parent-avatar">N</div>
+                          <div class="parent-details">
+                              <h4>Nathan</h4>
+                              <div class="parent-role">Ollie's Father</div>
+                          </div>
+                      </div>
+                      
+                      <div class="quote-section">
+                          <div class="quote-mark">"</div>
+                          <div class="quote-highlight">
+                              <p class="testimonial-quote">
+                                  "Mason and Josh tailor the sessions to the lads. Rather than just being a number, doing a set of drills that are pre made."
+                              </p>
+                          </div>
+                      </div>
+                      
+                      <div class="rating-display">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="rating-text">Personalized Approach</span>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Testimonial 3: Daniel (Cassius's father) -->
+              <div class="testimonial-card">
+                  <div class="card-tech-frame">
+                      <div class="frame-line top"></div>
+                      <div class="frame-line right"></div>
+                      <div class="frame-line bottom"></div>
+                      <div class="frame-line left"></div>
+                  </div>
+                  
+                  <div class="video-container">
+                      <iframe 
+                          src="https://www.youtube.com/embed/X97hDubH55s?rel=0&modestbranding=1" 
+                          title="Daniel testimonial"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen>
+                      </iframe>
+                      <div class="video-overlay">
+                          <div class="holographic-play">
+                              <div class="play-triangle"></div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="testimonial-content">
+                      <div class="parent-info">
+                          <div class="parent-avatar">D</div>
+                          <div class="parent-details">
+                              <h4>Daniel</h4>
+                              <div class="parent-role">Cassius's Father</div>
+                          </div>
+                      </div>
+                      
+                      <div class="quote-section">
+                          <div class="quote-mark">"</div>
+                          <div class="quote-highlight">
+                              <p class="testimonial-quote">
+                                  "From crying and kicking off to now that he is willing to try anything and he understands that if he keeps trying, he will become good and he will do it"
+                              </p>
+                          </div>
+                      </div>
+                      
+                      <div class="rating-display">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="rating-text">Life-Changing Growth</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div class="testimonials-cta">
+              <div class="cta-container">
+                  <h3 class="cta-title">Ready to Join These Success Stories?</h3>
+                  <p class="cta-subtitle">
+                      Book your £30 diagnosis session and start your child's transformation journey today
+                  </p>
+                  <button class="future-button" onclick="document.querySelector('.booking-section').scrollIntoView({behavior:'smooth'})">
+                      <span>START YOUR JOURNEY</span>
+                      <div class="button-icon"></div>
+                  </button>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Enhanced mobile touch interactions
+          const cards = document.querySelectorAll('.testimonial-card');
+          
+          cards.forEach(card => {
+              let touchStartY = 0;
+              let touchStartX = 0;
+              
+              card.addEventListener('touchstart', function(e) {
+                  touchStartY = e.touches[0].clientY;
+                  touchStartX = e.touches[0].clientX;
+                  this.style.transform = 'scale(0.98)';
+              }, { passive: true });
+              
+              card.addEventListener('touchend', function(e) {
+                  this.style.transform = '';
+                  
+                  const touchEndY = e.changedTouches[0].clientY;
+                  const touchEndX = e.changedTouches[0].clientX;
+                  const deltaY = Math.abs(touchEndY - touchStartY);
+                  const deltaX = Math.abs(touchEndX - touchStartX);
+                  
+                  // If it's a tap (minimal movement), trigger hover effects
+                  if (deltaY < 10 && deltaX < 10) {
+                      this.classList.toggle('mobile-active');
+                  }
+              }, { passive: true });
+              
+              card.addEventListener('touchmove', function(e) {
+                  // Reset scale if user starts scrolling
+                  this.style.transform = '';
+              }, { passive: true });
+          });
+          
+          // Intersection Observer for animation triggers
+          const observerOptions = {
+              threshold: 0.1,
+              rootMargin: '0px 0px -50px 0px'
+          };
+          
+          const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      entry.target.style.animationPlayState = 'running';
+                  }
+              });
+          }, observerOptions);
+          
+          cards.forEach(card => {
+              observer.observe(card);
+          });
+          
+          // Enhanced video interaction for mobile
+          const videoContainers = document.querySelectorAll('.video-container');
+          
+          videoContainers.forEach(container => {
+              const overlay = container.querySelector('.video-overlay');
+              const iframe = container.querySelector('iframe');
+              
+              container.addEventListener('click', function(e) {
+                  // Add visual feedback
+                  overlay.style.opacity = '0.8';
+                  setTimeout(() => {
+                      overlay.style.opacity = '';
+                  }, 200);
+              });
+          });
+          
+          // Parallax effect for tech orbs on scroll (desktop only)
+          if (window.innerWidth > 768) {
+              const orbs = document.querySelectorAll('.tech-orb');
+              
+              window.addEventListener('scroll', () => {
+                  const scrolled = window.pageYOffset;
+                  const rate = scrolled * -0.5;
+                  
+                  orbs.forEach((orb, index) => {
+                      const speed = 0.3 + (index * 0.1);
+                      orb.style.transform = `translateY(${rate * speed}px)`;
+                  });
+              });
+          }
+          
+          // Auto-play animation sequence for stars
+          function animateStars() {
+              const stars = document.querySelectorAll('.star');
+              stars.forEach((star, index) => {
+                  setTimeout(() => {
+                      star.style.animation = 'starTwinkle 0.5s ease-in-out';
+                      setTimeout(() => {
+                          star.style.animation = 'starTwinkle 3s ease-in-out infinite';
+                      }, 500);
+                  }, index * 100);
+              });
+          }
+          
+          // Trigger star animation when cards come into view
+          const starObserver = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      setTimeout(animateStars, 1000);
+                      starObserver.unobserve(entry.target);
+                  }
+              });
+          }, { threshold: 0.5 });
+          
+          const testimonialSection = document.querySelector('.testimonials-section');
+          if (testimonialSection) {
+              starObserver.observe(testimonialSection);
+          }
+      });
+  </script>
+
+  <style>
+      /* Additional mobile-specific styles */
+      @media (max-width: 768px) {
+          .testimonial-card.mobile-active {
+              transform: translateY(-10px) scale(1.02) !important;
+              border-color: var(--gold);
+              box-shadow: 0 15px 30px rgba(251, 191, 36, 0.2);
+              transition: all 0.3s ease;
+          }
+          
+          .testimonial-card.mobile-active .frame-line {
+              opacity: 1;
+              transform: scale(1) !important;
+          }
+          
+          .testimonial-card.mobile-active .parent-avatar {
+              transform: scale(1.05) rotate(2deg);
+          }
+          
+          /* Enhanced touch feedback */
+          .testimonial-card:active {
+              transform: scale(0.98) !important;
+              transition: transform 0.1s ease;
+          }
+          
+          .future-button:active {
+              transform: scale(0.95) !important;
+              transition: transform 0.1s ease;
+          }
+          
+          /* Improved readability on mobile */
+          .testimonial-quote {
+              font-size: 1.05rem;
+              line-height: 1.6;
+          }
+          
+          /* Better spacing for mobile */
+          .testimonials-grid {
+              gap: 35px;
+          }
+          
+          /* Enhanced video overlay for mobile */
+          .video-overlay {
+              background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, transparent 50%, rgba(251, 191, 36, 0.1) 100%);
+          }
+      }
+      
+      /* Extra responsive adjustments */
+      @media (max-width: 480px) {
+          .title-emblem {
+              font-size: 2rem;
+              margin-right: 10px;
+          }
+          
+          .testimonials-title {
+              font-size: 2rem;
+              line-height: 1.2;
+          }
+          
+          .parent-info {
+              flex-direction: column;
+              text-align: center;
+              gap: 10px;
+          }
+          
+          .quote-highlight {
+              margin: 15px 0;
+              padding: 15px 18px;
+          }
+          
+          .rating-display {
+              justify-content: center;
+              margin-top: 15px;
+          }
+      }
+  </style>
 
     <!-- Add mobile navigation -->
     <div class="mobile-nav">
@@ -5206,23 +6735,744 @@
     </section>
     <!-- END DIAGNOSIS HERO SECTION -->
 
-    <!-- WHY MOST KIDS PLATEAU SECTION (NEW) -->
-    <section class="plateau-section techy-card animate-fade-in">
+    
+
+    <style>
+      /* Variables for consistency */
+      :root {
+          --royal-blue: #1e3a8a;
+          --gold: #fbbf24;
+          --white: #ffffff;
+          --dark-blue: #0f172a;
+          --light-gold: #fef3c7;
+      }
+
+      /* === FUTURISTIC PLATEAU SECTION === */
+      .plateau-section {
+          
+          background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+          padding: 120px 40px;
+          margin: 80px 0;
+          border-radius: 40px;
+         
+          overflow: hidden;
+          border: 2px solid rgba(251, 191, 36, 0.2);
+          box-shadow: 
+              0 25px 60px rgba(30, 58, 138, 0.3),
+              0 0 0 1px rgba(251, 191, 36, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px);
+          animation: sectionPulse 6s ease-in-out infinite;
+      }
+
+      @keyframes sectionPulse {
+          0%, 100% { 
+              box-shadow: 
+                  0 25px 60px rgba(30, 58, 138, 0.3),
+                  0 0 0 1px rgba(251, 191, 36, 0.1),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          }
+          50% { 
+              box-shadow: 
+                  0 35px 80px rgba(30, 58, 138, 0.4),
+                  0 0 0 2px rgba(251, 191, 36, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          }
+      }
+
+      /* Animated tech grid background */
+      .plateau-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: 
+              linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+              radial-gradient(circle at 30% 20%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(251, 191, 36, 0.06) 0%, transparent 50%);
+          background-size: 60px 60px, 60px 60px, 300px 300px, 400px 400px;
+          animation: techGridMove 20s linear infinite;
+          pointer-events: none;
+      }
+
+      @keyframes techGridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(60px, 60px); }
+      }
+
+      /* Floating data particles */
+      .plateau-section::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 
+              radial-gradient(2px 2px at 20% 30%, var(--gold), transparent),
+              radial-gradient(2px 2px at 40% 70%, var(--gold), transparent),
+              radial-gradient(1px 1px at 60% 20%, var(--gold), transparent),
+              radial-gradient(1px 1px at 80% 80%, var(--gold), transparent),
+              radial-gradient(2px 2px at 90% 40%, var(--gold), transparent);
+          background-size: 200px 200px, 300px 300px, 150px 150px, 250px 250px, 180px 180px;
+          animation: particleFloat 25s linear infinite;
+          pointer-events: none;
+          opacity: 0.6;
+      }
+
+      @keyframes particleFloat {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          100% { transform: translate(-50px, -100px) rotate(360deg); }
+      }
+
+      .plateau-content {
+          max-width: 1000px;
+          margin: 0 auto;
+          text-align: center;
+          
+          z-index: 2;
+      }
+
+      /* Enhanced header with holographic icon */
+      .plateau-header {
+          margin-bottom: 60px;
+          
+      }
+
+      .plateau-icon-container {
+          width: 120px;
+          height: 120px;
+          margin: 0 auto 30px;
+          
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 
+              0 0 30px rgba(251, 191, 36, 0.6),
+              0 0 60px rgba(251, 191, 36, 0.3),
+              inset 0 2px 10px rgba(255, 255, 255, 0.3);
+          animation: iconGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes iconGlow {
+          0%, 100% { 
+              transform: scale(1);
+              box-shadow: 
+                  0 0 30px rgba(251, 191, 36, 0.6),
+                  0 0 60px rgba(251, 191, 36, 0.3),
+                  inset 0 2px 10px rgba(255, 255, 255, 0.3);
+          }
+          50% { 
+              transform: scale(1.05);
+              box-shadow: 
+                  0 0 40px rgba(251, 191, 36, 0.8),
+                  0 0 80px rgba(251, 191, 36, 0.4),
+                  inset 0 2px 15px rgba(255, 255, 255, 0.4);
+          }
+      }
+
+      .plateau-icon-container::before {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          right: -10px;
+          bottom: -10px;
+          border: 2px solid rgba(251, 191, 36, 0.3);
+          border-radius: 50%;
+          animation: orbitRing 4s linear infinite;
+      }
+
+      @keyframes orbitRing {
+          0% { transform: rotate(0deg); border-color: rgba(251, 191, 36, 0.3); }
+          50% { border-color: rgba(251, 191, 36, 0.6); }
+          100% { transform: rotate(360deg); border-color: rgba(251, 191, 36, 0.3); }
+      }
+
+      .plateau-icon {
+          width: 60px;
+          height: 60px;
+          stroke: var(--royal-blue);
+          stroke-width: 3;
+          filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.5));
+          animation: iconSpin 8s ease-in-out infinite;
+      }
+
+      @keyframes iconSpin {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(5deg); }
+          75% { transform: rotate(-5deg); }
+      }
+
+      .plateau-title {
+          font-size: clamp(2.5rem, 6vw, 4rem);
+          font-weight: 900;
+          background: linear-gradient(135deg, var(--white) 0%, var(--gold) 50%, var(--white) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 40px;
+          letter-spacing: -0.02em;
+          text-shadow: 0 8px 32px rgba(251, 191, 36, 0.3);
+          animation: titleShimmer 4s ease-in-out infinite;
+      }
+
+      @keyframes titleShimmer {
+          0%, 100% { filter: brightness(1); }
+          50% { filter: brightness(1.2); }
+      }
+
+      /* Interactive problem list */
+      .plateau-problems {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 30px;
+          margin: 60px 0;
+          max-width: 900px;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      .problem-card {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(251, 191, 36, 0.2);
+          border-radius: 25px;
+          padding: 35px 25px;
+          
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          animation: cardFloat 6s ease-in-out infinite;
+      }
+
+      .problem-card:nth-child(1) { animation-delay: 0s; }
+      .problem-card:nth-child(2) { animation-delay: 1s; }
+      .problem-card:nth-child(3) { animation-delay: 2s; }
+      .problem-card:nth-child(4) { animation-delay: 3s; }
+
+      @keyframes cardFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+      }
+
+      .problem-card:hover {
+          transform: translateY(-15px) scale(1.03);
+          border-color: var(--gold);
+          box-shadow: 
+              0 25px 50px rgba(251, 191, 36, 0.2),
+              0 0 0 2px rgba(251, 191, 36, 0.1),
+              0 0 40px rgba(251, 191, 36, 0.3);
+      }
+
+      /* Holographic scan effect */
+      .problem-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+          transition: left 0.6s ease;
+      }
+
+      .problem-card:hover::before {
+          left: 100%;
+      }
+
+      /* Tech border animation */
+      .problem-card::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 2px solid transparent;
+          border-radius: 25px;
+          background: 
+              linear-gradient(45deg, transparent, var(--gold), transparent) border-box,
+              rgba(255, 255, 255, 0.05) padding-box;
+          background-clip: border-box, padding-box;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+      }
+
+      .problem-card:hover::after {
+          opacity: 1;
+      }
+
+      .problem-icon-container {
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 20px;
+         
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+      }
+
+      .problem-card:hover .problem-icon-container {
+          transform: scale(1.1) rotate(5deg);
+          box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+      }
+
+      .problem-icon {
+          width: 30px;
+          height: 30px;
+          stroke: var(--royal-blue);
+          stroke-width: 2.5;
+          filter: drop-shadow(0 0 8px rgba(30, 58, 138, 0.3));
+      }
+
+      .problem-text {
+          font-size: 1.1rem;
+          color: var(--white);
+          line-height: 1.6;
+          text-align: center;
+          margin: 0;
+          font-weight: 500;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Solution highlight */
+      .plateau-solution {
+          margin-top: 60px;
+          padding: 40px;
+          background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.05) 100%);
+          border: 2px solid rgba(251, 191, 36, 0.4);
+          border-radius: 30px;
+         
+          overflow: hidden;
+          animation: solutionPulse 4s ease-in-out infinite;
+      }
+
+      @keyframes solutionPulse {
+          0%, 100% { 
+              border-color: rgba(251, 191, 36, 0.4);
+              box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+          }
+          50% { 
+              border-color: rgba(251, 191, 36, 0.6);
+              box-shadow: 0 0 40px rgba(251, 191, 36, 0.4);
+          }
+      }
+
+      .plateau-solution::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: repeating-linear-gradient(
+              45deg,
+              rgba(251, 191, 36, 0.02) 0px,
+              rgba(251, 191, 36, 0.02) 2px,
+              transparent 2px,
+              transparent 40px
+          );
+          animation: solutionLines 10s linear infinite;
+          pointer-events: none;
+      }
+
+      @keyframes solutionLines {
+          0% { transform: translateX(0) translateY(0); }
+          100% { transform: translateX(40px) translateY(20px); }
+      }
+
+      .solution-icon-container {
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 25px;
+          
+          box-shadow: 
+              0 0 25px rgba(251, 191, 36, 0.6),
+              0 0 50px rgba(251, 191, 36, 0.3);
+          animation: solutionIconSpin 6s ease-in-out infinite;
+      }
+
+      @keyframes solutionIconSpin {
+          0%, 100% { transform: rotate(0deg) scale(1); }
+          50% { transform: rotate(180deg) scale(1.1); }
+      }
+
+      .solution-icon {
+          width: 40px;
+          height: 40px;
+          stroke: var(--royal-blue);
+          stroke-width: 2.5;
+          filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.5));
+      }
+
+      .solution-text {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: var(--white);
+          text-align: center;
+          margin: 0;
+          text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+         
+          z-index: 2;
+      }
+
+      .highlight-diagnosis {
+          color: var(--gold);
+          font-weight: 900;
+          text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+          animation: diagnosisGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes diagnosisGlow {
+          0%, 100% { 
+              filter: brightness(1);
+              text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+          }
+          50% { 
+              filter: brightness(1.3);
+              text-shadow: 0 0 30px rgba(251, 191, 36, 0.9);
+          }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+          .plateau-section {
+              padding: 80px 20px;
+              margin: 40px 0;
+              border-radius: 30px;
+          }
+
+          .plateau-icon-container {
+              width: 100px;
+              height: 100px;
+          }
+
+          .plateau-icon {
+              width: 50px;
+              height: 50px;
+          }
+
+          .plateau-title {
+              font-size: 2.5rem;
+              margin-bottom: 30px;
+          }
+
+          .plateau-problems {
+              grid-template-columns: 1fr;
+              gap: 20px;
+              margin: 40px 0;
+          }
+
+          .problem-card {
+              padding: 25px 20px;
+          }
+
+          .problem-icon-container {
+              width: 50px;
+              height: 50px;
+          }
+
+          .problem-icon {
+              width: 25px;
+              height: 25px;
+          }
+
+          .problem-text {
+              font-size: 1rem;
+          }
+
+          .plateau-solution {
+              padding: 30px 20px;
+              margin-top: 40px;
+          }
+
+          .solution-icon-container {
+              width: 70px;
+              height: 70px;
+          }
+
+          .solution-icon {
+              width: 35px;
+              height: 35px;
+          }
+
+          .solution-text {
+              font-size: 1.2rem;
+          }
+
+          /* Enhanced mobile touch interactions */
+          .problem-card:active {
+              transform: scale(0.98);
+          }
+      }
+
+      /* Extra small screens */
+      @media (max-width: 480px) {
+          .plateau-section {
+              padding: 60px 15px;
+              border-radius: 25px;
+          }
+
+          .plateau-title {
+              font-size: 2rem;
+          }
+
+          .problem-card {
+              padding: 20px 15px;
+          }
+
+          .plateau-solution {
+              padding: 25px 15px;
+          }
+
+          .solution-text {
+              font-size: 1.1rem;
+          }
+      }
+
+      /* Accessibility improvements */
+      @media (prefers-reduced-motion: reduce) {
+          .plateau-section,
+          .plateau-icon-container,
+          .problem-card,
+          .plateau-solution,
+          .solution-icon-container,
+          .plateau-section::before,
+          .plateau-section::after {
+              animation: none;
+          }
+
+          .problem-card:hover,
+          .plateau-section:hover {
+              transition: none;
+          }
+      }
+  </style>
+</head>
+<body>
+  <!-- FUTURISTIC WHY MOST KIDS PLATEAU SECTION -->
+  <section class="plateau-section">
       <div class="plateau-content">
-        <div class="plateau-icon"><svg width="40" height="40" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-        <h2 class="plateau-title">Why Most Kids Plateau</h2>
-        <ul class="plateau-list">
-          <li><span class="plateau-bullet"><svg width="24" height="24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M19 12c0-3.866-3.134-7-7-7S5 8.134 5 12s3.134 7 7 7 7-3.134 7-7z"/></svg></span>Your child might be training hard — but if they're not improving, it's likely because no one's clearly diagnosed what's actually holding them back.</li>
-          <li><span class="plateau-bullet"><svg width="24" height="24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg></span>Generic sessions aren't enough</li>
-          <li><span class="plateau-bullet"><svg width="24" height="24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg></span>Coaches rotate, feedback is vague</li>
-          <li><span class="plateau-bullet"><svg width="24" height="24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>Parents are left guessing</li>
-        </ul>
-        <div class="plateau-highlight">
-          <span class="highlight-gold">That's where the <b>Diagnosis Session</b> changes everything.</span>
-        </div>
+          <div class="plateau-header">
+              <div class="plateau-icon-container">
+                  <svg class="plateau-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+              </div>
+              <h2 class="plateau-title">Why Most Kids Plateau</h2>
+          </div>
+
+          <div class="plateau-problems">
+              <div class="problem-card">
+                  <div class="problem-icon-container">
+                      <svg class="problem-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="3"/>
+                          <path d="M12 1v6m0 6v6"/>
+                          <path d="M21 12h-6m-6 0H3"/>
+                      </svg>
+                  </div>
+                  <p class="problem-text">
+                      Your child might be training hard — but if they're not improving, it's likely because no one's clearly diagnosed what's actually holding them back.
+                  </p>
+              </div>
+
+              <div class="problem-card">
+                  <div class="problem-icon-container">
+                      <svg class="problem-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                          <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                  </div>
+                  <p class="problem-text">
+                      Generic sessions aren't enough
+                  </p>
+              </div>
+
+              <div class="problem-card">
+                  <div class="problem-icon-container">
+                      <svg class="problem-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                          <circle cx="9" cy="7" r="4"/>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                  </div>
+                  <p class="problem-text">
+                      Coaches rotate, feedback is vague
+                  </p>
+              </div>
+
+              <div class="problem-card">
+                  <div class="problem-icon-container">
+                      <svg class="problem-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="M12 17h.01"/>
+                      </svg>
+                  </div>
+                  <p class="problem-text">
+                      Parents are left guessing
+                  </p>
+              </div>
+          </div>
+
+          <div class="plateau-solution">
+              <div class="solution-icon-container">
+                  <svg class="solution-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  </svg>
+              </div>
+              <p class="solution-text">
+                  That's where the <span class="highlight-diagnosis">Diagnosis Session</span> changes everything.
+              </p>
+          </div>
       </div>
-    </section>
-    <!-- END WHY MOST KIDS PLATEAU SECTION -->
+  </section>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Enhanced interaction effects
+          const problemCards = document.querySelectorAll('.problem-card');
+          
+          problemCards.forEach((card, index) => {
+              // Add staggered entrance animation
+              card.style.animationDelay = `${index * 0.2}s`;
+              
+              // Enhanced hover effects
+              card.addEventListener('mouseenter', function() {
+                  this.style.transform = 'translateY(-15px) scale(1.03)';
+                  
+                  // Add ripple effect
+                  const ripple = document.createElement('div');
+                  ripple.style.cssText = `
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      width: 0;
+                      height: 0;
+                      background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 70%);
+                      border-radius: 50%;
+                      transform: translate(-50%, -50%);
+                      animation: rippleEffect 0.6s ease-out;
+                      pointer-events: none;
+                      z-index: 1;
+                  `;
+                  
+                  // Add ripple keyframes if not already added
+                  if (!document.querySelector('#ripple-styles')) {
+                      const style = document.createElement('style');
+                      style.id = 'ripple-styles';
+                      style.textContent = `
+                          @keyframes rippleEffect {
+                              0% { width: 0; height: 0; opacity: 1; }
+                              100% { width: 200px; height: 200px; opacity: 0; }
+                          }
+                      `;
+                      document.head.appendChild(style);
+                  }
+                  
+                  this.appendChild(ripple);
+                  
+                  setTimeout(() => {
+                      if (ripple.parentNode) {
+                          ripple.remove();
+                      }
+                  }, 600);
+              });
+              
+              card.addEventListener('mouseleave', function() {
+                  this.style.transform = '';
+              });
+              
+              // Mobile touch interactions
+              card.addEventListener('touchstart', function(e) {
+                  this.style.transform = 'scale(0.98)';
+              }, { passive: true });
+              
+              card.addEventListener('touchend', function() {
+                  setTimeout(() => {
+                      this.style.transform = '';
+                  }, 150);
+              });
+          });
+          
+          // Intersection Observer for entrance animations
+          const observerOptions = {
+              threshold: 0.3,
+              rootMargin: '0px 0px -50px 0px'
+          };
+          
+          const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      entry.target.style.animationPlayState = 'running';
+                      
+                      // Trigger sequential card animations
+                      const cards = entry.target.querySelectorAll('.problem-card');
+                      cards.forEach((card, index) => {
+                          setTimeout(() => {
+                              card.style.opacity = '1';
+                              card.style.transform = 'translateY(0)';
+                          }, index * 200);
+                      });
+                  }
+              });
+          }, observerOptions);
+          
+          const plateauSection = document.querySelector('.plateau-section');
+          if (plateauSection) {
+              observer.observe(plateauSection);
+              
+              // Initially hide cards for entrance animation
+              const cards = plateauSection.querySelectorAll('.problem-card');
+              cards.forEach(card => {
+                  card.style.opacity = '0';
+                  card.style.transform = 'translateY(30px)';
+                  card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+              });
+          }
+          
+          // Parallax effect for background elements (desktop only)
+          if (window.innerWidth > 768) {
+              window.addEventListener('scroll', () => {
+                  const scrolled = window.pageYOffset;
+                  const rate = scrolled * -0.2;
+                  
+                 
+              });
+          }
+          
+          // Enhanced solution highlight interaction
+          const solutionElement = document.querySelector('.plateau-solution');
+          if (solutionElement) {
+              solutionElement.addEventListener('mouseenter', function() {
+                  this.style.transform = 'scale(1.02)';
+                  this.style.borderColor = 'var(--gold)';
+              });
+              
+              solutionElement.addEventListener('mouseleave', function() {
+                  this.style.transform = 'scale(1)';
+                  this.style.borderColor = '';
+              });
+          }
+      });
+  </script>
 
  
 
