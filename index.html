@@ -134,10 +134,117 @@
         }
 
         .hero-content {
+            display: flex;
+            flex-direction: column;
             text-align: center;
             max-width: 1200px;
             margin: 0 auto;
             padding: 120px 20px 60px 20px;
+        }
+
+        .hero-left, .hero-right {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 900px) {
+            .hero-content {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                justify-content: space-between;
+                gap: 60px;
+            }
+            .hero-left {
+                flex: 1 1 0;
+                max-width: 520px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .hero-right {
+                flex: 1 1 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 400px;
+            }
+            .hero-book-now-desktop {
+                display: inline-block;
+                margin-top: 2.2rem;
+                padding: 20px 60px;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--royal-blue);
+                background: linear-gradient(90deg, var(--gold) 0%, #fffbe6 100%);
+                border: none;
+                border-radius: 50px;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+                pointer-events: auto;
+                z-index: 2;
+            }
+            .hero-book-now-desktop::after {
+                content: '';
+                position: absolute;
+                left: -60%;
+                top: 0;
+                width: 60%;
+                height: 100%;
+                background: linear-gradient(120deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.0) 100%);
+                transform: skewX(-20deg);
+                pointer-events: none;
+                transition: left 0.5s;
+            }
+            .hero-book-now-desktop:hover {
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+                transform: translateY(-5px) scale(1.05);
+            }
+            .hero-book-now-desktop:hover::after {
+                left: 100%;
+                transition: left 0.5s;
+            }
+            .hero-book-now-desktop:active {
+                transform: translateY(0) scale(0.98);
+            }
+            .hero-book-now-mobile {
+                display: none !important;
+            }
+            .video-container1 {
+                width: 500px;
+                aspect-ratio: 9/16;
+                height: 700px;
+            }
+        }
+
+        @media (max-width: 899px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-left, .hero-right {
+                max-width: 100%;
+                align-items: center;
+                justify-content: center;
+            }
+            .hero-book-now-desktop {
+                display: none !important;
+            }
+            .hero-book-now-mobile {
+                display: block !important;
+            }
+            .video-container1 {
+                max-width: 90vw;
+                min-width: 220px;
+                aspect-ratio: 9/16;
+                height: 60vw;
+            }
         }
 
         .title {
@@ -166,16 +273,16 @@
         /* Video Container */
         .video-container1 {
             position: relative;
-            margin: 3rem auto;
+            margin: 0 auto;
             border: 2px solid var(--gold);
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 0 100px rgba(251, 191, 36, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
-            max-width: 800px;
+            max-width: 400px;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            aspect-ratio: 9/16;
             background: rgba(30, 58, 138, 0.3);
             overflow: hidden;
         }
@@ -187,6 +294,7 @@
             width: 100%;
             height: 100%;
             border: none;
+            aspect-ratio: 9/16;
         }
 
         .video-container1:hover {
@@ -531,7 +639,7 @@
         .calendar-day:hover {
             transform: translateY(-5px);
             border-color: var(--gold);
-            background: rgba(255, 215, 0, 0.1);
+            background: rgba(255, 215, 0, 0.15);
         }
 
         .calendar-day.available {
@@ -2480,11 +2588,12 @@
                 margin-top: 0.5rem;
             }
             .title {
-                font-size: 2rem;
+                font-size: 3rem;
                 line-height: 1.1;
                 margin-bottom: 1rem;
                 word-break: normal;
                 white-space: normal;
+                padding: 1rem;
             }
         }
         /* Gold shiny Book Now button for mobile */
@@ -4853,16 +4962,22 @@
     <!-- HERO SECTION -->
     <section class="hero" id="hero">
         <div class="hero-content">
-            <h1 class="title">Unlock Your Inner Performance</h1>
-            <div class="video-container1" id="videoContainer1">
-                 <iframe 
-                    src="https://www.youtube.com/embed/cPRyJAUJf7g?autoplay=1&controls=1&rel=0&modestbranding=1" 
-                    title="Child Development Assessment"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
+            <div class="hero-left">
+                <h1 class="title">Direct to Diagnosis</h1>
+                <div class="cta-subtitle" style=" color:var(--gold); font-weight:600; margin-bottom:10px; letter-spacing:0.02em;">Unlock your Inner Performance</div>
+                <button class="hero-book-now-desktop" id="heroBookNowDesktopBtn">Book Now</button>
             </div>
-            <button class="hero-book-now-mobile" id="heroBookNowMobileBtn" style="display: none;">Book Now</button>
+            <div class="hero-right">
+                <div class="video-container1" id="videoContainer1">
+                    <iframe 
+                        src="https://www.youtube.com/embed/cPRyJAUJf7g?autoplay=1&controls=1&rel=0&modestbranding=1" 
+                        title="Child Development Assessment"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                <button onclick="toggleBookNowBtn()" class="hero-book-now-mobile" id="heroBookNowMobileBtn" style="display: none;">Book Now</button>
+            </div>
         </div>
     </section>
     <script>
@@ -4879,8 +4994,18 @@
         toggleBookNowBtn();
         window.addEventListener('resize', toggleBookNowBtn);
         var btn = document.getElementById('heroBookNowMobileBtn');
+        var btn1 = document.getElementById('heroBookNowDesktopBtn');
         if (btn) {
             btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var bookSection = document.querySelector('.booking-section');
+                if (bookSection) {
+                    bookSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+        if (btn1) {
+            btn1.addEventListener('click', function(e) {
                 e.preventDefault();
                 var bookSection = document.querySelector('.booking-section');
                 if (bookSection) {
@@ -5802,10 +5927,11 @@
         }
   
         .cta-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.7rem;
             color: var(--light-gold);
             margin-bottom: 35px;
             line-height: 1.6;
+            
         }
   
         .future-button {
@@ -5938,7 +6064,7 @@
             }
   
             .cta-subtitle {
-                font-size: 1.1rem;
+                font-size: 1.4rem;
             }
   
             .future-button {
@@ -6795,7 +6921,7 @@
         <p class="diagnosis-subheadline animate-fade-in-delay">
           Book a <span class="gold">£30 Diagnosis Session</span> to uncover the root issues in their game — and build a personalised plan for growth.
         </p>
-        <button class="diagnosis-cta-btn gold-glow" onclick="document.querySelector('.booking-section').scrollIntoView({behavior:'smooth'})">
+        <button class="diagnosis-cta-btn gold-glow" id="heroBookNowDesktopBtn">
           BOOK THE DIAGNOSIS SESSION
         </button>
         <div class="diagnosis-hero-anim-bg"></div>
