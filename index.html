@@ -4522,7 +4522,6 @@
       </style>
 
       <script>
-
         // Helper function to format date consistently in British timezone
         function formatDateLocal(date) {
             const year = date.getFullYear();
@@ -4577,6 +4576,162 @@
                 timeZone: 'Europe/London'
             });
         }
+
+        // Helper to scroll to booking and fire Pixel event
+        function handleBookNowClick(e, location) {
+          if (e) e.preventDefault();
+          var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+          if (typeof fbq === 'function') {
+            fbq('track', 'Lead', { location: location || 'unknown', device: device });
+            fbq('track', 'BookNowClick', { location: location || 'unknown', device: device });
+          }
+          var bookSection = document.querySelector('.booking-section');
+          if (bookSection) {
+            bookSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          // Desktop nav Book Now
+          var desktopBookBtn = document.getElementById('desktopBookNowBtn');
+          if (desktopBookBtn) {
+            desktopBookBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'desktop-nav'); });
+          }
+          // Hero desktop Book Now
+          var heroBookNowDesktopBtn = document.getElementById('heroBookNowDesktopBtn');
+          if (heroBookNowDesktopBtn) {
+            heroBookNowDesktopBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'hero-desktop'); });
+          }
+          // Hero mobile Book Now
+          var heroBookNowMobileBtn = document.getElementById('heroBookNowMobileBtn');
+          if (heroBookNowMobileBtn) {
+            heroBookNowMobileBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'hero-mobile'); });
+          }
+          // Floating Book Now
+          var floatingBookBtn = document.getElementById('floatingBookBtn');
+          if (floatingBookBtn) {
+            floatingBookBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'floating'); });
+          }
+          // Diagnosis hero Book Now (🏆 section)
+          var diagnosisBookNowBtn = document.getElementById('diagnosisBookNowBtn');
+          if (diagnosisBookNowBtn) {
+            diagnosisBookNowBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'diagnosis'); });
+          }
+          // Coaches section Book Now
+          var coachesCtaBtn = document.getElementById('coachesBookNowBtn');
+          if (coachesCtaBtn) {
+            coachesCtaBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'coaches'); });
+          }
+          // Testimonials section Book Now
+          var testimonialsCtaBtn = document.getElementById('testimonialsBookNowBtn');
+          if (testimonialsCtaBtn) {
+            testimonialsCtaBtn.addEventListener('click', function(e) { handleBookNowClick(e, 'testimonials'); });
+          }
+          // Track clicks on the SimplyBook widget container
+          var widgetDiv = document.getElementById('simplybook-widget');
+          if (widgetDiv) {
+            widgetDiv.addEventListener('click', function() {
+              var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+              if (typeof fbq === 'function') {
+                fbq('track', 'WidgetClick', { device: device });
+              }
+            });
+          }
+        });
+
+        (function() {
+          // Helper: device type
+          function getDeviceType() {
+            return window.innerWidth <= 768 ? 'mobile' : 'desktop';
+          }
+
+          // 1. Section Views
+          var sectionSelectors = [
+            '.testimonials-section',
+            '.meet-coaches-section',
+            '.diagnosis-value-section',
+            '.faqs-section',
+            '.booking-section'
+          ];
+          var sectionMap = {
+            '.testimonials-section': 'Testimonials',
+            '.meet-coaches-section': 'Coaches',
+            '.diagnosis-value-section': 'DiagnosisValue',
+            '.faqs-section': 'FAQs',
+            '.booking-section': 'Booking'
+          };
+          var seenSections = {};
+          if (window.IntersectionObserver) {
+            var observer = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                  var section = sectionSelectors.find(sel => entry.target.matches(sel));
+                  if (section && !seenSections[section]) {
+                    seenSections[section] = true;
+                    var sectionName = sectionMap[section] || section;
+                    var device = getDeviceType();
+                    if (typeof fbq === 'function') {
+                      fbq('track', 'ViewContent', { section: sectionName, device: device });
+                      fbq('trackCustom', 'SectionView', { section: sectionName, device: device });
+                    }
+                  }
+                }
+              });
+            }, { threshold: 0.3 });
+            sectionSelectors.forEach(function(sel) {
+              var el = document.querySelector(sel);
+              if (el) observer.observe(el);
+            });
+          }
+
+          // 3. FAQ Interactions
+          document.addEventListener('DOMContentLoaded', function() {
+            var faqs = document.querySelectorAll('.faq-question');
+            faqs.forEach(function(faq) {
+              faq.addEventListener('click', function() {
+                var questionText = faq.innerText || faq.textContent;
+                var device = getDeviceType();
+                if (typeof fbq === 'function') {
+                  fbq('track', 'ViewContent', { faq: questionText, device: device });
+                  fbq('trackCustom', 'FAQOpen', { question: questionText, device: device });
+                }
+              });
+            });
+          });
+
+          // 6. Scroll Depth
+          var scrollDepths = [25, 50, 75, 100];
+          var firedDepths = {};
+          function checkScrollDepth() {
+            var scrollTop = window.scrollY || window.pageYOffset;
+            var docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            var winHeight = window.innerHeight;
+            var percent = Math.round(((scrollTop + winHeight) / docHeight) * 100);
+            scrollDepths.forEach(function(depth) {
+              if (percent >= depth && !firedDepths[depth]) {
+                firedDepths[depth] = true;
+                var device = getDeviceType();
+                if (typeof fbq === 'function') {
+                  fbq('trackCustom', 'ScrollDepth', { depth: depth, device: device });
+                }
+              }
+            });
+          }
+          window.addEventListener('scroll', checkScrollDepth);
+          window.addEventListener('resize', checkScrollDepth);
+
+          // 8. Time on Page
+          var pageStart = Date.now();
+          function sendTimeOnPage() {
+            var seconds = Math.round((Date.now() - pageStart) / 1000);
+            var device = getDeviceType();
+            if (typeof fbq === 'function') {
+              fbq('trackCustom', 'TimeOnPage', { seconds: seconds, device: device });
+            }
+          }
+          window.addEventListener('beforeunload', sendTimeOnPage);
+          window.addEventListener('pagehide', sendTimeOnPage);
+        })();
       </script>
     <script src="https://widget.simplybook.me/v2/widget/widget.js"></script>
 </head>
@@ -5263,7 +5418,7 @@
                   <div class="cta-content">
                       <h3>Ready to Experience Their Vision?</h3>
                       <p>Book your diagnosis session and see the difference their approach makes</p>
-                      <button class="cta-button" onclick="document.querySelector('.booking-section').scrollIntoView({behavior:'smooth'})">
+                      <button class="cta-button" id="coachesBookNowBtn">
                           <span class="button-text">Book Your Session</span>
                           <span class="button-glow"></span>
                       </button>
@@ -6317,7 +6472,7 @@
                     <p class="cta-subtitle">
                         Book your £30 diagnosis session and start your child's transformation journey today
                     </p>
-                    <button class="future-button" onclick="document.querySelector('.booking-section').scrollIntoView({behavior:'smooth'})">
+                    <button class="future-button" id="testimonialsBookNowBtn">
                         <span>START YOUR JOURNEY</span>
                         <div class="button-icon"></div>
                     </button>
@@ -6921,7 +7076,7 @@
         <p class="diagnosis-subheadline animate-fade-in-delay">
           Book a <span class="gold">£30 Diagnosis Session</span> to uncover the root issues in their game — and build a personalised plan for growth.
         </p>
-        <button class="diagnosis-cta-btn gold-glow" id="heroBookNowDesktopBtn">
+        <button class="diagnosis-cta-btn gold-glow" id="diagnosisBookNowBtn">
           BOOK THE DIAGNOSIS SESSION
         </button>
         <div class="diagnosis-hero-anim-bg"></div>
@@ -7489,7 +7644,7 @@
               <div class="problem-card">
                   <div class="problem-icon-container">
                       <svg class="problem-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3"/>
                           <circle cx="12" cy="12" r="3"/>
                       </svg>
                   </div>
