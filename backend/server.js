@@ -20,6 +20,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Add backend URL to response headers for frontend to use
+app.use((req, res, next) => {
+  res.setHeader('X-Backend-URL', process.env.BACKEND_URL || 'http://localhost:3000');
+  next();
+});
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

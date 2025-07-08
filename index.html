@@ -4580,6 +4580,16 @@
             });
         }
 
+        // Helper function to get backend URL
+        function getBackendUrl() {
+          // In development, use localhost
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:3000';
+          }
+          // In production, use environment variable or fallback
+          return window.BACKEND_URL || 'https://inner-performance-backend.onrender.com';
+        }
+
         // Helper to scroll to contact section and fire both Pixel and Server events
         function handleBookNowClick(e, location) {
           if (e) e.preventDefault();
@@ -4598,7 +4608,7 @@
           }
           
           // Server-side tracking (reliable backup)
-          fetch('http://localhost:3000/api/conversions/event', {
+          fetch(getBackendUrl() + '/api/conversions/event', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -5052,7 +5062,7 @@
               }
               
               // Server-side tracking
-              fetch('http://localhost:3000/api/conversions/event', {
+              fetch(getBackendUrl() + '/api/conversions/event', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
@@ -5183,7 +5193,7 @@
                 }
                 
                 // Server-side tracking
-                fetch('http://localhost:3000/api/conversions/event', {
+                fetch(getBackendUrl() + '/api/conversions/event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -5270,7 +5280,7 @@
                 }
                 
                 // Server-side tracking
-                fetch('http://localhost:3000/api/conversions/event', {
+                fetch(getBackendUrl() + '/api/conversions/event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -5309,7 +5319,7 @@
                 }
                 
                 // Server-side tracking
-                fetch('http://localhost:3000/api/conversions/event', {
+                fetch(getBackendUrl() + '/api/conversions/event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -8255,7 +8265,7 @@
                   }
                   
                   // Server-side tracking
-                  fetch('http://localhost:3000/api/conversions/event', {
+                  fetch(getBackendUrl() + '/api/conversions/event', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
@@ -8313,7 +8323,7 @@
               }
               
               // Server-side tracking
-              fetch('http://localhost:3000/api/conversions/event', {
+              fetch(getBackendUrl() + '/api/conversions/event', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({

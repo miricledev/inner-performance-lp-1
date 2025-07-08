@@ -97,7 +97,7 @@ const sendBatchEvents = async (req, res) => {
         ...event,
         event_time: event.event_time || Math.floor(Date.now() / 1000),
         action_source: 'website',
-        event_source_url: req.headers.referer || 'https://yourdomain.com',
+        event_source_url: req.headers.referer || 'https://miricledev.github.io/inner-performance-lp-1/',
         user_data: {
           ...event.user_data,
           client_ip_address: req.ip,
@@ -178,7 +178,7 @@ const testEndpoint = async (req, res) => {
         event_name: 'TestEvent',
         event_time: Math.floor(Date.now() / 1000),
         action_source: 'website',
-        event_source_url: 'https://yourdomain.com/test',
+        event_source_url: 'https://miricledev.github.io/inner-performance-lp-1/test',
         user_data: {
           client_ip_address: req.ip,
           client_user_agent: req.headers['user-agent']
