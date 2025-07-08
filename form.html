@@ -83,6 +83,15 @@
                 </div>
               </div>
               
+              <div class="form-group">
+                <div class="textarea-container">
+                  <textarea id="contactChallenge" name="challenge" rows="4" placeholder=""></textarea>
+                  <label for="contactChallenge" class="floating-label">What's your child's biggest football challenge right now?</label>
+                  <div class="input-glow"></div>
+                  <div class="input-scan-line"></div>
+                </div>
+              </div>
+              
               <button type="submit" class="submit-btn" id="submitBtn">
                 <span class="btn-shimmer"></span>
                 <span class="btn-text">Request Priority Contact</span>
@@ -677,6 +686,50 @@
     display: none;
   }
 
+  /* === TEXTAREA STYLES === */
+  .textarea-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    border: 2px solid var(--royal-blue);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.05);
+  }
+
+  .textarea-container textarea {
+    width: 100%;
+    padding: 12px 12px 12px 12px;
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    color: var(--royal-blue);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    z-index: 2;
+    position: relative;
+    box-shadow: none;
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .textarea-container textarea:focus {
+    outline: none;
+    background: #f3f6fa;
+    box-shadow: 0 0 0 2px var(--royal-blue);
+  }
+
+  .textarea-container textarea:focus + .floating-label,
+  .textarea-container textarea:not(:placeholder-shown) + .floating-label {
+    top: -10px;
+    left: 8px;
+    font-size: 0.85rem;
+    color: var(--royal-blue);
+    background: #fffbe6;
+    padding: 0 6px;
+    transform: translateY(0);
+  }
+
   /* === SUBMIT BUTTON === */
   .submit-btn {
     background: var(--royal-blue);
@@ -1136,7 +1189,7 @@
       const successModal = document.getElementById('successModal');
       
       // Enhanced input animations
-      const inputs = document.querySelectorAll('.input-container input');
+      const inputs = document.querySelectorAll('.input-container input, .textarea-container textarea');
       inputs.forEach(input => {
           input.addEventListener('focus', function() {
               this.parentElement.style.transform = 'scale(1.02)';
@@ -1148,7 +1201,7 @@
           
           // Real-time validation feedback
           input.addEventListener('input', function() {
-              if (this.validity.valid) {
+              if (this.validity.valid || (this.tagName === 'TEXTAREA' && this.value.trim().length > 0)) {
                   this.style.borderColor = '#22c55e';
                   this.style.boxShadow = '0 0 15px rgba(34, 197, 94, 0.3)';
               } else {
