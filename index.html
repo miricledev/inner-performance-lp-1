@@ -8493,7 +8493,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-            z-index: 9999;
+            z-index: 999999;
             cursor: pointer;
             transition: all 0.3s ease;
             color: white;
@@ -8527,6 +8527,12 @@
               height: 50px;
               font-size: 22px;
             }
+          }
+
+          /* Ensure WhatsApp button stays on top of all other elements */
+          .whatsapp-float-btn {
+            z-index: 999999 !important;
+            position: fixed !important;
           }
         </style>
       
