@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/logo.jpg" type="image/jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
 
     <title>Direct to Diagnosis - Expert Child Development Assessment</title>
     <script src="https://widget.simplybook.it/v2/widget/widget.js" type="text/javascript"></script>
@@ -4577,17 +4580,42 @@
             });
         }
 
-        // Helper to scroll to booking and fire Pixel event
+        // Helper to scroll to contact section and fire both Pixel and Server events
         function handleBookNowClick(e, location) {
           if (e) e.preventDefault();
           var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+          
+          // Frontend Facebook Pixel tracking (immediate)
           if (typeof fbq === 'function') {
             fbq('track', 'Lead', { location: location || 'unknown', device: device });
             fbq('track', 'BookNowClick', { location: location || 'unknown', device: device });
+            fbq('trackCustom', 'BookNowButtonClick', { 
+              location: location || 'unknown', 
+              device: device,
+              button_type: 'book_now',
+              page_section: location || 'unknown'
+            });
           }
-          var bookSection = document.querySelector('.booking-section');
-          if (bookSection) {
-            bookSection.scrollIntoView({ behavior: 'smooth' });
+          
+          // Server-side tracking (reliable backup)
+          fetch('http://localhost:3000/api/conversions/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event_name: 'Lead',
+              custom_data: {
+                location: location || 'unknown',
+                device: device,
+                button_type: 'book_now',
+                page_section: location || 'unknown',
+                source: 'frontend_backup'
+              }
+            })
+          }).catch(err => console.log('Server-side tracking failed:', err));
+          
+          var contactSection = document.querySelector('.contact-section');
+          if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
           }
         }
 
@@ -4635,6 +4663,15 @@
               if (typeof fbq === 'function') {
                 fbq('track', 'WidgetClick', { device: device });
               }
+            });
+          }
+          // Logo scroll to top
+          var logo = document.querySelector('.desktop-nav-logo');
+          if (logo) {
+            logo.style.cursor = 'pointer';
+            logo.addEventListener('click', function(e) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             });
           }
         });
@@ -4991,7 +5028,7 @@
       const floatingContainer = document.getElementById('floatingBookNow');
       
       if (floatingBtn) {
-          // Smooth scroll to booking section
+          // Smooth scroll to contact section with Facebook Pixel tracking
           floatingBtn.addEventListener('click', function(e) {
               e.preventDefault();
               
@@ -5001,14 +5038,40 @@
                   this.style.transform = '';
               }, 150);
               
-              // Find booking section and scroll to it
-              const bookingSection = document.querySelector('.booking-section') || 
-                                   document.querySelector('#booking') ||
-                                   document.querySelector('[id*="book"]') ||
-                                   document.querySelector('.booking');
+              // Frontend Facebook Pixel tracking
+              var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+              if (typeof fbq === 'function') {
+                  fbq('track', 'Lead', { location: 'floating', device: device });
+                  fbq('track', 'BookNowClick', { location: 'floating', device: device });
+                  fbq('trackCustom', 'BookNowButtonClick', { 
+                      location: 'floating', 
+                      device: device,
+                      button_type: 'book_now',
+                      page_section: 'floating'
+                  });
+              }
+              
+              // Server-side tracking
+              fetch('http://localhost:3000/api/conversions/event', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                      event_name: 'Lead',
+                      custom_data: {
+                          location: 'floating',
+                          device: device,
+                          button_type: 'book_now',
+                          page_section: 'floating',
+                          source: 'frontend_backup'
+                      }
+                  })
+              }).catch(err => console.log('Server-side tracking failed:', err));
+              
+              // Find contact section and scroll to it
+              const contactSection = document.querySelector('.contact-section');
                                    
-              if (bookingSection) {
-                  bookingSection.scrollIntoView({ 
+              if (contactSection) {
+                  contactSection.scrollIntoView({ 
                       behavior: 'smooth',
                       block: 'start'
                   });
@@ -5105,10 +5168,49 @@
         if (desktopBookBtn) {
             desktopBookBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                var bookSection = document.querySelector('.booking-section');
-                if (bookSection) {
-                    bookSection.scrollIntoView({ behavior: 'smooth' });
+                var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+                
+                // Frontend Facebook Pixel tracking
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead', { location: 'desktop-nav', device: device });
+                    fbq('track', 'BookNowClick', { location: 'desktop-nav', device: device });
+                    fbq('trackCustom', 'BookNowButtonClick', { 
+                        location: 'desktop-nav', 
+                        device: device,
+                        button_type: 'book_now',
+                        page_section: 'desktop-nav'
+                    });
                 }
+                
+                // Server-side tracking
+                fetch('http://localhost:3000/api/conversions/event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: 'Lead',
+                        custom_data: {
+                            location: 'desktop-nav',
+                            device: device,
+                            button_type: 'book_now',
+                            page_section: 'desktop-nav',
+                            source: 'frontend_backup'
+                        }
+                    })
+                }).catch(err => console.log('Server-side tracking failed:', err));
+                
+                var contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+        // Logo scroll to top
+        var logo = document.querySelector('.desktop-nav-logo');
+        if (logo) {
+            logo.style.cursor = 'pointer';
+            logo.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
     });
@@ -5153,18 +5255,78 @@
         if (btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                var bookSection = document.querySelector('.booking-section');
-                if (bookSection) {
-                    bookSection.scrollIntoView({ behavior: 'smooth' });
+                var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+                
+                // Frontend Facebook Pixel tracking
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead', { location: 'hero-mobile', device: device });
+                    fbq('track', 'BookNowClick', { location: 'hero-mobile', device: device });
+                    fbq('trackCustom', 'BookNowButtonClick', { 
+                        location: 'hero-mobile', 
+                        device: device,
+                        button_type: 'book_now',
+                        page_section: 'hero-mobile'
+                    });
+                }
+                
+                // Server-side tracking
+                fetch('http://localhost:3000/api/conversions/event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: 'Lead',
+                        custom_data: {
+                            location: 'hero-mobile',
+                            device: device,
+                            button_type: 'book_now',
+                            page_section: 'hero-mobile',
+                            source: 'frontend_backup'
+                        }
+                    })
+                }).catch(err => console.log('Server-side tracking failed:', err));
+                
+                var contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         }
         if (btn1) {
             btn1.addEventListener('click', function(e) {
                 e.preventDefault();
-                var bookSection = document.querySelector('.booking-section');
-                if (bookSection) {
-                    bookSection.scrollIntoView({ behavior: 'smooth' });
+                var device = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+                
+                // Frontend Facebook Pixel tracking
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead', { location: 'hero-desktop', device: device });
+                    fbq('track', 'BookNowClick', { location: 'hero-desktop', device: device });
+                    fbq('trackCustom', 'BookNowButtonClick', { 
+                        location: 'hero-desktop', 
+                        device: device,
+                        button_type: 'book_now',
+                        page_section: 'hero-desktop'
+                    });
+                }
+                
+                // Server-side tracking
+                fetch('http://localhost:3000/api/conversions/event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: 'Lead',
+                        custom_data: {
+                            location: 'hero-desktop',
+                            device: device,
+                            button_type: 'book_now',
+                            page_section: 'hero-desktop',
+                            source: 'frontend_backup'
+                        }
+                    })
+                }).catch(err => console.log('Server-side tracking failed:', err));
+                
+                var contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         }
@@ -6470,7 +6632,7 @@
                 <div class="cta-container">
                     <h3 class="cta-title">Ready to Join These Success Stories?</h3>
                     <p class="cta-subtitle">
-                        Book your £30 diagnosis session and start your child's transformation journey today
+                        Request a booking and start your child's transformation journey today
                     </p>
                     <button class="future-button" id="testimonialsBookNowBtn">
                         <span>START YOUR JOURNEY</span>
@@ -6672,143 +6834,1609 @@
         }
     </style>
 
-    <!-- BOOKING SECTION -->
-    <section class="booking-section">
-        <div class="container">
-            <div class="booking-content">
-                <h2>Book Your Diagnosis Session</h2>
-                <p>Select a time that works best for your family</p>
+      <!-- Advanced Unsure? Contact Now Section -->
+  <section class="unsure-advanced-section">
+    <div class="unsure-advanced-bg">
+      <div class="whatsapp-bubble"></div>
+      <div class="whatsapp-bubble delay"></div>
+      <div class="whatsapp-bubble small"></div>
+    </div>
+    <div class="unsure-advanced-content">
+      <h2 class="unsure-advanced-title">Unsure? <span class="wave">🤔</span> <span class="whatsapp-green">Contact Now</span></h2>
+      <p class="unsure-advanced-desc">Not sure if this is right for you? Chat with us instantly and get all your questions answered in real time. Our team is ready to help you make the best decision for your child's future.</p>
+     
+      <a href="https://wa.me/447877328346" target="_blank" class="unsure-advanced-btn">
+        <i class="fab fa-whatsapp"></i> Contact Now on WhatsApp
+      </a>
+    </div>
+  </section>
 
-                <style>
-                    #simplybook-widget {
-                        max-width: 900px;
-                        margin: 2rem auto;
-                        padding: 24px 18px 18px 18px;
-                        background: rgba(33, 30, 56, 0.7);
-                        border-radius: 2rem;
-                        box-shadow: 0 10px 32px 0 rgba(41, 37, 81, 0.35);
-                        border: 2.5px solid #a991ff;
-                        backdrop-filter: blur(16px) saturate(180%);
-                        transition: box-shadow 0.3s cubic-bezier(.2,1,.22,1), transform 0.35s cubic-bezier(.2,1,.22,1);
-                        animation: widgetFadeIn 0.8s cubic-bezier(.2,1,.22,1) both;
-                      }
-                      
-                      #simplybook-widget:hover {
-                        box-shadow: 0 16px 44px 0 rgba(121, 99, 255, 0.35);
-                        transform: scale(1.015);
-                        border-color: #fbbf24;
-                      }
-                      
-                      @keyframes widgetFadeIn {
-                        0% {
-                          opacity: 0;
-                          transform: translateY(30px) scale(0.97);
-                        }
-                        100% {
-                          opacity: 1;
-                          transform: translateY(0) scale(1);
-                        }
-                      }
-                      
-                      /* Make sure the iframe fits and has rounded corners too */
-                      #simplybook-widget iframe {
-                        width: 100% !important;
-                        min-height: 650px !important;
-                        border-radius: 1.4rem;
-                        border: none;
-                        background: transparent;
-                        box-shadow: none;
-                      }
-                      
-                </style>
-                
+  <style>
+  .unsure-advanced-section {
+    position: relative;
+    margin: 60px auto 0 auto;
+    max-width: 800px;
+    border-radius: 32px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8f9f0 0%, #f4f6fa 100%);
+    box-shadow: 0 8px 40px 0 rgba(30,58,138,0.13), 0 1.5px 8px 0 rgba(37,211,102,0.08);
+    padding: 64px 32px 56px 32px;
+    z-index: 2;
+    animation: unsureFadeIn 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+  }
+  .unsure-advanced-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .whatsapp-bubble {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 60% 40%, #25D366 0%, #1ebe5d 100%);
+    opacity: 0.18;
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: bubbleFloat 6s infinite ease-in-out;
+  }
+  .whatsapp-bubble.delay {
+    left: 70%;
+    bottom: 20%;
+    width: 80px;
+    height: 80px;
+    opacity: 0.13;
+    animation-delay: 2s;
+  }
+  .whatsapp-bubble.small {
+    left: 40%;
+    bottom: 60%;
+    width: 50px;
+    height: 50px;
+    opacity: 0.10;
+    animation-delay: 1s;
+  }
+  @keyframes bubbleFloat {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.08); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  @keyframes unsureFadeIn {
+    0% { opacity: 0; transform: translateY(60px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .unsure-advanced-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  .unsure-advanced-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #1e3a8a;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    animation: titlePop 1.1s cubic-bezier(.68,-0.55,.27,1.55);
+  }
+  .unsure-advanced-title .whatsapp-green {
+    color: #25D366;
+    font-weight: 900;
+    text-shadow: 0 2px 12px #25d36633;
+  }
+  .unsure-advanced-title .wave {
+    display: inline-block;
+    animation: waveAnim 1.2s infinite linear alternate;
+    transform-origin: 70% 70%;
+  }
+  @keyframes waveAnim {
+    0% { transform: rotate(-10deg); }
+    100% { transform: rotate(18deg); }
+  }
+  @keyframes titlePop {
+    0% { opacity: 0; transform: scale(0.92); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .unsure-advanced-desc {
+    font-size: 1.25rem;
+    color: #1e3a8a;
+    opacity: 0.85;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInUp 1.2s 0.2s both;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .unsure-advanced-interactive {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    font-size: 2.1rem;
+    animation: fadeInUp 1.2s 0.4s both;
+  }
+  .chat-emoji {
+    transition: transform 0.2s;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 8px #25d36622);
+  }
+  .chat-emoji:hover {
+    transform: scale(1.25) rotate(-8deg);
+    filter: drop-shadow(0 4px 16px #25d36655);
+  }
+  .unsure-advanced-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #25D366;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.25rem;
+    padding: 18px 44px;
+    border-radius: 40px;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(37,211,102,0.18);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    margin-top: 18px;
+    border: none;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 1.2s 0.6s both;
+  }
+  .unsure-advanced-btn:hover, .unsure-advanced-btn:focus {
+    background: #1ebe5d;
+    box-shadow: 0 8px 32px rgba(37,211,102,0.25);
+    transform: translateY(-2px) scale(1.04);
+  }
+  .unsure-advanced-btn .btn-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: inline-block;
+    margin-right: 2px;
+    vertical-align: middle;
+  }
+  @media (max-width: 700px) {
+    .unsure-advanced-section {
+      padding: 36px 8px 32px 8px;
+    }
+    .unsure-advanced-title {
+      font-size: 1.5rem;
+    }
+    .unsure-advanced-btn {
+      font-size: 1rem;
+      padding: 13px 20px;
+    }
+    .unsure-advanced-desc {
+      font-size: 1rem;
+    }
+    .unsure-advanced-interactive {
+      font-size: 1.3rem;
+    }
+  }
+  </style>
 
-                <!-- Put this in your index.html where you want the booking widget to show -->
-
-                <div id="coach-images" style="display:none; text-align:center; margin-bottom:1rem;">
-                    <img id="coach-mason" src="images/mason.jpg" alt="Mason" style="display:none; width:140px; border-radius:50%; margin:0 10px;">
-                    <img id="coach-josh" src="images/josh.jpg" alt="Josh" style="display:none; width:140px; border-radius:50%; margin:0 10px;">
-                  </div>
-                  
-                  <!-- Widget container -->
-                  <div id="simplybook-widget">
-
-                    <script type="text/javascript">
-                        var widget = new SimplybookWidget({"widget_type":"iframe","url":"https:\/\/innerperformance.simplybook.it","theme":"blur","theme_settings":{"timeline_hide_unavailable":"1","hide_past_days":"0","timeline_modern_display":"as_slots","sb_base_color":"#2543a8","display_item_mode":"block","body_bg_color":"#ffffff","dark_font_color":"#2a2b39","light_font_color":"#ffffff","btn_color_1":"#e8e469","sb_company_label_color":"#090a39","hide_img_mode":"0","sb_busy":"#ccbe86","sb_available":"#e8de4f"},"timeline":"classes_plugin","datepicker":"top_calendar","is_rtl":false,"app_config":{"clear_session":0,"allow_switch_to_ada":0,"predefined":{"location":"2"}}});
-                    </script>
-                    
-                  </div>
-                  
-                  
-               
-                
-
-
-
-
-                
-            
-                
-                <p class="urgency-text">⚡ Limited slots each week - Book early to secure your preferred time</p>
-            </div>
-        </div>
-    </section>
 
    
-
-           <!-- DIAGNOSIS VALUE TABLE SECTION (NEW) -->
-           <section class="diagnosis-value-section">
-            <h2 class="value-title">What Do You Get for £30?</h2>
-            <div class="value-table-wrapper">
-              <table class="value-table">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Diagnosis Session</th>
-                    <th>Typical Football Session</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Personalised Assessment</td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                    <td class="cross"><svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></td>
-                  </tr>
-                  <tr>
-                    <td>1-to-1 Feedback for Parent & Player</td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                    <td class="cross"><svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></td>
-                  </tr>
-                  <tr>
-                    <td>Technical, Mental & Physical Review</td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                    <td class="cross"><svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></td>
-                  </tr>
-                  <tr>
-                    <td>Written Roadmap & Next Steps</td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                    <td class="cross"><svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></td>
-                  </tr>
-                  <tr>
-                    <td>Academy-Standard Drills</td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                    <td class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></td>
-                  </tr>
-                  <tr>
-                    <td>Price</td>
-                    <td class="highlight">£30 (one-off)</td>
-                    <td>£30–£50/session</td>
-                  </tr>
-                </tbody>
-              </table>
+ <!-- FUTURISTIC CONTACT SECTION -->
+ <section class="contact-section">
+    <div class="contact-bg-effects">
+      <div class="tech-grid-lines"></div>
+      <div class="floating-particles">
+        <div class="particle" data-speed="2"></div>
+        <div class="particle" data-speed="1.5"></div>
+        <div class="particle" data-speed="3"></div>
+        <div class="particle" data-speed="2.5"></div>
+        <div class="particle" data-speed="1.8"></div>
+        <div class="particle" data-speed="2.2"></div>
+      </div>
+      <div class="energy-waves"></div>
+    </div>
+  
+    <div class="container">
+      <div class="contact-header">
+        <div class="header-icon-container">
+          <div class="icon-orbit-ring"></div>
+          <div class="icon-orbit-ring delay"></div>
+          <svg class="contact-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <path d="M13 8l-3 3-3-3"/>
+          </svg>
+        </div>
+        <h2 class="contact-title">
+          <span class="title-glow">Ready to</span>
+          <span class="title-highlight">Start the Journey?</span>
+        </h2>
+        <p class="contact-subtitle">Get in touch instantly or leave your details for priority booking</p>
+      </div>
+  
+      <div class="contact-options">
+       
+  
+        <!-- Contact Form Option -->
+        <div class="contact-option form-option">
+          <div class="option-bg-glow"></div>
+          <div class="option-tech-frame">
+            <div class="frame-corner top-left"></div>
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <div class="frame-corner bottom-right"></div>
+          </div>
+          
+          <div class="option-content">
+            <div class="option-icon-container">
+              <div class="icon-pulse-ring"></div>
+              <svg class="option-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+                <path d="M3 7l9 6 9-6"/>
+              </svg>
             </div>
-            <div class="value-table-note">
-              <span class="tick"><svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg></span> = Included &nbsp;&nbsp; <span class="cross"><svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span> = Not Included
-            </div>
-          </section>
-          <!-- END DIAGNOSIS VALUE TABLE SECTION -->
+            <h3 class="option-title">Booking Request</h3>
+            <p class="option-description">Leave your details for priority booking</p>
+            
+            <form class="contact-form" id="contactForm">
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="text" id="contactName" name="name" required>
+                  <label for="contactName" class="floating-label">Full Name</label>
+                  <div class="input-glow"></div>
+                  <div class="input-scan-line"></div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="email" id="contactEmail" name="email" required>
+                  <label for="contactEmail" class="floating-label">Email Address</label>
+                  <div class="input-glow"></div>
+                  <div class="input-scan-line"></div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="input-container">
+                  <input type="tel" id="contactPhone" name="phone" required>
+                  <label for="contactPhone" class="floating-label">Phone Number</label>
+                  <div class="input-glow"></div>
+                  <div class="input-scan-line"></div>
+                </div>
+              </div>
+              
+              <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="btn-shimmer"></span>
+                <span class="btn-text">Request Booking</span>
+                <div class="btn-energy-trail"></div>
+                <div class="btn-loading-spinner" style="display: none;">
+                  <div class="spinner-ring"></div>
+                </div>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Success Modal -->
+      <div class="success-modal" id="successModal" style="display: none;">
+        <div class="modal-bg-blur"></div>
+        <div class="modal-content">
+          <div class="success-icon-container">
+            <div class="success-ring"></div>
+            <div class="success-ring delay"></div>
+            <svg class="success-icon" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </div>
+          <h3 class="success-title">Message Sent Successfully!</h3>
+          <p class="success-message">We'll be in touch within 24 hours to discuss your child's football development.</p>
+          <button class="success-close-btn" onclick="closeSuccessModal()">
+            <span>Continue</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  /* === CONTACT SECTION VARIABLES === */
+  :root {
+    --royal-blue: #1e3a8a;
+    --gold: #fbbf24;
+    --white: #ffffff;
+    --dark-blue: #0f172a;
+    --light-gold: #fef3c7;
+  }
+  
+  /* === MAIN CONTACT SECTION === */
+  .contact-section {
+    position: relative;
+    background: linear-gradient(120deg, #FFD700, #fffbe6, #fbbf24, #fffbe6, #FFD700);
+    background-size: 300% 300%;
+    animation: goldShineMove 6s linear infinite;
+    border: 3px solid var(--royal-blue);
+    padding: 60px 0 40px 0;
+    margin: 40px 0;
+    overflow: hidden;
+    border-radius: 24px;
+    color: var(--royal-blue);
+  }
 
+  @keyframes goldShineMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .contact-section * {
+    color: var(--royal-blue) !important;
+  }
+
+  .contact-option.form-option {
+    background: transparent;
+    border-radius: 18px;
+    box-shadow: none;
+    padding: 0;
+    border: none;
+  }
+  
+  /* === ANIMATED BACKGROUND EFFECTS === */
+  .contact-bg-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .tech-grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(rgba(251, 191, 36, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 191, 36, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    opacity: 0.6;
+  }
+  
+  @keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+  }
+  
+  .floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(251, 191, 36, 0.5);
+    animation: particleFloat 8s ease-in-out infinite;
+  }
+  
+  .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; animation-duration: 12s; }
+  .particle:nth-child(2) { top: 60%; left: 80%; animation-delay: 2s; animation-duration: 10s; }
+  .particle:nth-child(3) { top: 40%; left: 30%; animation-delay: 4s; animation-duration: 14s; }
+  .particle:nth-child(4) { top: 80%; left: 60%; animation-delay: 6s; animation-duration: 11s; }
+  .particle:nth-child(5) { top: 15%; left: 70%; animation-delay: 1s; animation-duration: 13s; }
+  .particle:nth-child(6) { top: 70%; left: 20%; animation-delay: 3s; animation-duration: 9s; }
+  
+  @keyframes particleFloat {
+    0%, 100% { 
+      transform: translateY(0px) translateX(0px) scale(1);
+      opacity: 0.6;
+    }
+    25% { 
+      transform: translateY(-30px) translateX(20px) scale(1.2);
+      opacity: 1;
+    }
+    50% { 
+      transform: translateY(-15px) translateX(-25px) scale(0.8);
+      opacity: 0.8;
+    }
+    75% { 
+      transform: translateY(-40px) translateX(15px) scale(1.1);
+      opacity: 1;
+    }
+  }
+  
+  .energy-waves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(30, 58, 138, 0.08) 0%, transparent 50%);
+    animation: energyPulse 8s ease-in-out infinite;
+  }
+  
+  @keyframes energyPulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% { 
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+  
+  /* === HEADER SECTION === */
+  .contact-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+    animation: headerEntrance 1.2s ease-out;
+  }
+  
+  @keyframes headerEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .header-icon-container {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon-orbit-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    border-radius: 50%;
+    animation: orbitRotate 8s linear infinite;
+  }
+  
+  .icon-orbit-ring.delay {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border-color: rgba(251, 191, 36, 0.5);
+    animation-direction: reverse;
+    animation-duration: 6s;
+  }
+  
+  @keyframes orbitRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .contact-icon {
+    width: 60px;
+    height: 60px;
+    color: var(--gold);
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6));
+    animation: iconPulse 3s ease-in-out infinite;
+    z-index: 2;
+  }
+  
+  @keyframes iconPulse {
+    0%, 100% { 
+      transform: scale(1);
+      filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6));
+    }
+    50% { 
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.9));
+    }
+  }
+  
+  .contact-title {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+  }
+  
+  .title-glow {
+    color: var(--white);
+    animation: titleShimmer 4s ease-in-out infinite;
+  }
+  
+  .title-highlight {
+    background: none;
+    color: var(--royal-blue) !important;
+    -webkit-text-fill-color: var(--royal-blue) !important;
+    text-shadow: none;
+    font-weight: 900;
+  }
+  
+  @keyframes titleShimmer {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+  }
+  
+  @keyframes goldShine {
+    0%, 100% { 
+      filter: brightness(1);
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+    }
+    50% { 
+      filter: brightness(1.3);
+      text-shadow: 0 0 40px rgba(251, 191, 36, 0.8);
+    }
+  }
+  
+  .contact-subtitle {
+    font-size: 1rem;
+    color: var(--royal-blue);
+    opacity: 0.9;
+    font-weight: 500;
+    text-shadow: none;
+  }
+  
+  /* === CONTACT OPTIONS === */
+  .contact-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .contact-option {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 30px;
+    padding: 50px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: optionEntrance 1s ease-out;
+  }
+  
+  .whatsapp-option { animation-delay: 0.2s; }
+  .form-option { animation-delay: 0.4s; }
+  
+  @keyframes optionEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(60px) scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .contact-option:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 
+      0 25px 50px rgba(251, 191, 36, 0.2),
+      0 0 0 2px rgba(251, 191, 36, 0.1),
+      0 0 40px rgba(251, 191, 36, 0.3);
+  }
+  
+  /* === TECH FRAME EFFECTS === */
+  .option-tech-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .frame-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--gold);
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+  
+  .frame-corner.top-left {
+    top: 15px;
+    left: 15px;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  .frame-corner.top-right {
+    top: 15px;
+    right: 15px;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  .frame-corner.bottom-left {
+    bottom: 15px;
+    left: 15px;
+    border-right: none;
+    border-top: none;
+  }
+  
+  .frame-corner.bottom-right {
+    bottom: 15px;
+    right: 15px;
+    border-left: none;
+    border-top: none;
+  }
+  
+  .contact-option:hover .frame-corner {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  
+  .option-bg-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .contact-option:hover .option-bg-glow {
+    width: 400px;
+    height: 400px;
+  }
+  
+  /* === OPTION CONTENT === */
+  .option-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  
+  .option-icon-container {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+  .contact-option:hover .option-icon-container {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+  }
+  
+  .icon-pulse-ring {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(251, 191, 36, 0.4);
+    border-radius: 50%;
+    animation: pulseRing 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulseRing {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    50% { 
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+  
+  .option-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--royal-blue);
+    filter: drop-shadow(0 0 8px rgba(30, 58, 138, 0.3));
+  }
+  
+  .option-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 15px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .option-description {
+    font-size: 1.1rem;
+    color: var(--light-gold);
+    margin-bottom: 30px;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  
+  /* === WHATSAPP BUTTON === */
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: #25D366;
+    color: var(--white);
+    padding: 18px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .whatsapp-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+    color: var(--white);
+    text-decoration: none;
+  }
+  
+  /* === CONTACT FORM === */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.05);
+    padding: 18px 10px;
+    margin-top: 0;
+    color: var(--royal-blue);
+    font-size: 1rem;
+  }
+
+  .form-group {
+    position: relative;
+  }
+
+  .input-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    border: 2px solid var(--royal-blue);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.05);
+  }
+
+  .input-container input {
+    width: 100%;
+    padding: 12px 12px 12px 12px;
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    color: var(--royal-blue);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    z-index: 2;
+    position: relative;
+    box-shadow: none;
+  }
+
+  .input-container input:focus {
+    outline: none;
+    background: #f3f6fa;
+    box-shadow: 0 0 0 2px var(--royal-blue);
+  }
+
+  .floating-label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: var(--royal-blue);
+    font-size: 1rem;
+    font-weight: 500;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 3;
+    opacity: 0.8;
+    background: #fff;
+    padding: 0 4px;
+  }
+
+  .input-container input:focus + .floating-label,
+  .input-container input:valid + .floating-label {
+    top: -10px;
+    left: 8px;
+    font-size: 0.85rem;
+    color: var(--royal-blue);
+    background: #fffbe6;
+    padding: 0 6px;
+    transform: translateY(0);
+  }
+
+  .input-glow {
+    display: none;
+  }
+
+  .input-scan-line {
+    display: none;
+  }
+
+  /* === SUBMIT BUTTON === */
+  .submit-btn {
+    background: var(--royal-blue);
+    color: #fff !important;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 800;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
+    margin-top: 6px;
+  }
+
+  .submit-btn:hover {
+    background: #2541a1;
+    color: #fff !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(30, 58, 138, 0.2);
+  }
+
+  .submit-btn:active {
+    transform: scale(0.98);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  /* === BUTTON EFFECTS === */
+  .btn-shimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+    border-radius: 50px;
+  }
+  
+  .whatsapp-btn:hover .btn-shimmer,
+  .submit-btn:hover .btn-shimmer {
+    left: 100%;
+  }
+  
+  .btn-energy-trail {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    animation: energyTrail 2s ease-in-out infinite;
+  }
+  
+  @keyframes energyTrail {
+    0%, 100% { 
+      transform: translateY(-50%) scale(1);
+      opacity: 0.6;
+    }
+    50% { 
+      transform: translateY(-50%) scale(1.2);
+      opacity: 1;
+    }
+  }
+  
+  .btn-loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .spinner-ring {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(30, 58, 138, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid var(--royal-blue);
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* === SUCCESS MODAL === */
+  .success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.4s ease-out;
+  }
+  
+  @keyframes modalFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  .modal-bg-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+  }
+  
+  .modal-content {
+    background: linear-gradient(135deg, var(--royal-blue) 0%, var(--dark-blue) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 30px;
+    padding: 50px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 25px 50px rgba(251, 191, 36, 0.3);
+    animation: modalSlideIn 0.5s ease-out;
+  }
+  
+  @keyframes modalSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px) scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .success-icon-container {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+  }
+  
+  .success-ring {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(34, 197, 94, 0.6);
+    border-radius: 50%;
+    animation: successPulse 2s ease-in-out infinite;
+  }
+  
+  .success-ring.delay {
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    animation-delay: 0.5s;
+    border-color: rgba(34, 197, 94, 0.4);
+  }
+  
+  @keyframes successPulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    50% { 
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+  
+  .success-icon {
+    width: 50px;
+    height: 50px;
+    color: var(--white);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    animation: successBounce 0.6s ease-out;
+  }
+  
+  @keyframes successBounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  .success-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 15px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .success-message {
+    font-size: 1.1rem;
+    color: var(--light-gold);
+    margin-bottom: 30px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+  
+  .success-close-btn {
+    background: linear-gradient(135deg, var(--gold) 0%, #f59e0b 100%);
+    color: var(--royal-blue);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .success-close-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(251, 191, 36, 0.4);
+  }
+  
+  .success-close-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .success-close-btn:hover::before {
+    left: 100%;
+  }
+  
+  /* === MOBILE RESPONSIVE === */
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 80px 0 60px 0;
+      margin: 40px 0;
+    }
+  
+    .contact-options {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 0 20px;
+    }
+  
+    .contact-option {
+      padding: 40px 25px;
+      border-radius: 25px;
+    }
+  
+    .header-icon-container {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .contact-title {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+  
+    .contact-subtitle {
+      font-size: 1.1rem;
+      padding: 0 20px;
+    }
+  
+    .option-icon-container {
+      width: 70px;
+      height: 70px;
+    }
+  
+    .option-icon {
+      width: 35px;
+      height: 35px;
+    }
+  
+    .option-title {
+      font-size: 1.6rem;
+    }
+  
+    .option-description {
+      font-size: 1rem;
+    }
+  
+    .whatsapp-btn,
+    .submit-btn {
+      padding: 16px 30px;
+      font-size: 1.1rem;
+    }
+  
+    .input-container input {
+      padding: 18px 18px;
+      font-size: 1rem;
+    }
+  
+    .floating-label {
+      font-size: 1rem;
+      left: 18px;
+    }
+  
+    .modal-content {
+      padding: 40px 25px;
+      margin: 0 20px;
+    }
+  
+    .success-icon-container {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .success-icon {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .success-title {
+      font-size: 1.6rem;
+    }
+  
+    .success-message {
+      font-size: 1rem;
+    }
+  
+    /* Enhanced mobile touch interactions */
+    .contact-option:active {
+      transform: scale(0.98);
+    }
+  
+    .whatsapp-btn:active,
+    .submit-btn:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  /* === EXTRA SMALL SCREENS === */
+  @media (max-width: 480px) {
+    .contact-section {
+      padding: 60px 0 40px 0;
+    }
+  
+    .contact-options {
+      padding: 0 15px;
+      gap: 30px;
+    }
+  
+    .contact-option {
+      padding: 30px 20px;
+    }
+  
+    .contact-title {
+      font-size: 2rem;
+    }
+  
+    .contact-subtitle {
+      font-size: 1rem;
+    }
+  
+    .option-title {
+      font-size: 1.4rem;
+    }
+  
+    .whatsapp-btn,
+    .submit-btn {
+      padding: 14px 25px;
+      font-size: 1rem;
+    }
+  
+    .input-container input {
+      padding: 16px;
+    }
+  
+    .modal-content {
+      padding: 30px 20px;
+    }
+  }
+  
+  /* === ACCESSIBILITY === */
+  @media (prefers-reduced-motion: reduce) {
+    .contact-section *,
+    .contact-section *::before,
+    .contact-section *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+  
+  /* === FOCUS STYLES FOR ACCESSIBILITY === */
+  .whatsapp-btn:focus,
+  .submit-btn:focus,
+  .success-close-btn:focus {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+  
+  .input-container input:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  
+  /* === HIGH CONTRAST MODE === */
+  @media (prefers-contrast: high) {
+    .contact-option {
+      border-width: 3px;
+    }
     
+    .input-container input {
+      border-width: 3px;
+    }
+    
+    .whatsapp-btn,
+    .submit-btn {
+      border: 2px solid var(--royal-blue);
+    }
+  }
+
+  /* === FORCE SUBMIT BUTTON TEXT WHITE === */
+  .submit-btn .btn-text {
+    color: #fff !important;
+  }
+  </style>
+  
+  <script>
+  // Contact Form Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contactForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const successModal = document.getElementById('successModal');
+      
+      // Enhanced input animations
+      const inputs = document.querySelectorAll('.input-container input');
+      inputs.forEach(input => {
+          input.addEventListener('focus', function() {
+              this.parentElement.style.transform = 'scale(1.02)';
+          });
+          
+          input.addEventListener('blur', function() {
+              this.parentElement.style.transform = 'scale(1)';
+          });
+          
+          // Real-time validation feedback
+          input.addEventListener('input', function() {
+              if (this.validity.valid) {
+                  this.style.borderColor = '#22c55e';
+                  this.style.boxShadow = '0 0 15px rgba(34, 197, 94, 0.3)';
+              } else {
+                  this.style.borderColor = '#ef4444';
+                  this.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.3)';
+              }
+          });
+      });
+  
+      // Form submission
+      contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Show loading state
+          const btnText = submitBtn.querySelector('.btn-text');
+          const spinner = submitBtn.querySelector('.btn-loading-spinner');
+          
+          btnText.style.opacity = '0';
+          spinner.style.display = 'block';
+          submitBtn.disabled = true;
+          
+          // Collect form data and send as FormData (not JSON) to avoid CORS issues
+          const formData = new FormData(contactForm);
+          
+          // Format phone number to prevent Excel formula errors
+          const phoneInput = document.getElementById('contactPhone');
+          if (phoneInput && phoneInput.value) {
+              let phoneNumber = phoneInput.value.trim();
+              
+              // Remove any non-digit characters except + for international format
+              phoneNumber = phoneNumber.replace(/[^\d+]/g, '');
+              
+              // If it starts with +44, convert to UK format starting with 0
+              if (phoneNumber.startsWith('+44')) {
+                  phoneNumber = '0' + phoneNumber.substring(3);
+              }
+              // If it starts with 44 (without +), convert to UK format
+              else if (phoneNumber.startsWith('44')) {
+                  phoneNumber = '0' + phoneNumber.substring(2);
+              }
+              // If it doesn't start with 0 and is 11 digits, assume it's a UK number
+              else if (phoneNumber.length === 11 && !phoneNumber.startsWith('0')) {
+                  phoneNumber = '0' + phoneNumber;
+              }
+              
+              // Update the form data with the formatted phone number
+              formData.set('phone', phoneNumber);
+          }
+          try {
+              // Send to Google Apps Script (no Content-Type header, FormData only)
+              const response = await fetch('https://script.google.com/macros/s/AKfycbyA2YsjAT8UOeCR53qhmP9rFvyewaCeCNo270mp9189P_xamb9gWEX_oCZOSTeXRScu/exec', {
+                  method: 'POST',
+                  body: formData
+              });
+              
+              if (response.ok) {
+                  // Show success modal
+                  showSuccessModal();
+                  
+                  // Reset form
+                  contactForm.reset();
+                  
+                  // Reset input styles
+                  inputs.forEach(input => {
+                      input.style.borderColor = '';
+                      input.style.boxShadow = '';
+                  });
+                  
+                  // Frontend Facebook Pixel tracking
+                  if (typeof fbq === 'function') {
+                      fbq('track', 'Contact', {
+                          content_name: 'Contact Form',
+                          content_category: 'form_submission',
+                          value: 1,
+                          currency: 'GBP'
+                      });
+                  }
+                  
+                  // Server-side tracking
+                  fetch('http://localhost:3000/api/conversions/event', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                          event_name: 'Contact',
+                          custom_data: {
+                              content_name: 'Contact Form',
+                              content_category: 'form_submission',
+                              value: 1,
+                              currency: 'GBP',
+                              source: 'frontend_backup'
+                          }
+                      })
+                  }).catch(err => console.log('Server-side tracking failed:', err));
+              } else {
+                  throw new Error('Failed to submit form');
+              }
+          } catch (error) {
+              console.error('Error submitting form:', error);
+              alert('There was an error submitting your form. Please try again or contact us via WhatsApp.');
+          } finally {
+              // Reset button state
+              btnText.style.opacity = '1';
+              spinner.style.display = 'none';
+              submitBtn.disabled = false;
+          }
+      });
+      
+      // Enhanced hover effects for options
+      const contactOptions = document.querySelectorAll('.contact-option');
+      contactOptions.forEach(option => {
+          option.addEventListener('mouseenter', function() {
+              this.style.transform = 'translateY(-10px) scale(1.02)';
+              
+              // Add particle burst effect
+              createParticleBurst(this);
+          });
+          
+          option.addEventListener('mouseleave', function() {
+              this.style.transform = 'translateY(0) scale(1)';
+          });
+      });
+      
+      // WhatsApp button tracking
+      const whatsappBtn = document.querySelector('.whatsapp-btn');
+      if (whatsappBtn) {
+          whatsappBtn.addEventListener('click', function() {
+              // Frontend Facebook Pixel tracking
+              if (typeof fbq === 'function') {
+                  fbq('track', 'Contact', {
+                      content_name: 'WhatsApp',
+                      content_category: 'whatsapp_click',
+                      value: 1,
+                      currency: 'GBP'
+                  });
+              }
+              
+              // Server-side tracking
+              fetch('http://localhost:3000/api/conversions/event', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                      event_name: 'Contact',
+                      custom_data: {
+                          content_name: 'WhatsApp',
+                          content_category: 'whatsapp_click',
+                          value: 1,
+                          currency: 'GBP',
+                          source: 'frontend_backup'
+                      }
+                  })
+              }).catch(err => console.log('Server-side tracking failed:', err));
+          });
+      }
+  });
+  
+  // Show success modal
+  function showSuccessModal() {
+      const modal = document.getElementById('successModal');
+      modal.style.display = 'flex';
+      
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      
+      // Auto close after 5 seconds
+      setTimeout(() => {
+          closeSuccessModal();
+      }, 5000);
+  }
+  
+  // Close success modal
+  function closeSuccessModal() {
+      const modal = document.getElementById('successModal');
+      modal.style.animation = 'modalFadeOut 0.4s ease-out';
+      
+      setTimeout(() => {
+          modal.style.display = 'none';
+          modal.style.animation = '';
+          document.body.style.overflow = '';
+      }, 400);
+  }
+  
+  // Particle burst effect
+  function createParticleBurst(element) {
+      const particles = 8;
+      const rect = element.getBoundingClientRect();
+      
+      for (let i = 0; i < particles; i++) {
+          const particle = document.createElement('div');
+          particle.style.cssText = `
+              position: fixed;
+              width: 4px;
+              height: 4px;
+              background: #fbbf24;
+              border-radius: 50%;
+              pointer-events: none;
+              z-index: 9999;
+              left: ${rect.left + rect.width / 2}px;
+              top: ${rect.top + rect.height / 2}px;
+              box-shadow: 0 0 8px #fbbf24;
+          `;
+          
+          document.body.appendChild(particle);
+          
+          const angle = (i / particles) * Math.PI * 2;
+          const velocity = 50 + Math.random() * 30;
+          const distance = 80 + Math.random() * 40;
+          
+          particle.animate([
+              { 
+                  transform: 'translate(0, 0) scale(1)',
+                  opacity: 1 
+              },
+              { 
+                  transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                  opacity: 0 
+              }
+          ], {
+              duration: 800,
+              easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          }).onfinish = () => {
+              particle.remove();
+          };
+      }
+  }
+  
+  // Enhanced particle animation
+  function enhanceParticleAnimation() {
+      const particles = document.querySelectorAll('.particle');
+      
+      particles.forEach((particle, index) => {
+          const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      particle.style.animationPlayState = 'running';
+                  } else {
+                      particle.style.animationPlayState = 'paused';
+                  }
+              });
+          });
+          
+          observer.observe(particle);
+      });
+  }
+  
+  // Initialize enhanced animations
+  document.addEventListener('DOMContentLoaded', enhanceParticleAnimation);
+  
+  // Add CSS for modal fade out animation
+  const style = document.createElement('style');
+  style.textContent = `
+      @keyframes modalFadeOut {
+          0% { opacity: 1; }
+          100% { opacity: 0; }
+      }
+  `;
+  document.head.appendChild(style);
+  
+  </script>
+
+  
+        
 
 
     <!-- Add mobile navigation -->
@@ -6840,6 +8468,38 @@
             </a>
         </div>
     </div>
+
+    <section>
+        <style>
+          .whatsapp-float-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            color: white;
+            font-size: 28px;
+          }
+      
+          .whatsapp-float-btn:hover {
+            transform: scale(1.1);
+          }
+        </style>
+      
+        <a href="https://wa.me/447877328346" class="whatsapp-float-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </section>
+      
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -7074,7 +8734,7 @@
           <span class="highlight">Let's Find Out – Together.</span>
         </h1>
         <p class="diagnosis-subheadline animate-fade-in-delay">
-          Book a <span class="gold">£30 Diagnosis Session</span> to uncover the root issues in their game — and build a personalised plan for growth.
+         <span class="gold">Request a booking</span> to uncover the root issues in their game — and build a personalised plan for growth.
         </p>
         <button class="diagnosis-cta-btn gold-glow" id="diagnosisBookNowBtn">
           BOOK THE DIAGNOSIS SESSION
